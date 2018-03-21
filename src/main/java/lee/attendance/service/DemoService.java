@@ -1,5 +1,11 @@
 package lee.attendance.service;
 
-public interface DemoService {
 
+import java.util.List;
+
+import lee.attendance.domain.User;
+
+public interface DemoService {
+	public abstract List<User> findAllUser();
+	
 }

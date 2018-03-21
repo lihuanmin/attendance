@@ -11,7 +11,21 @@
         http://www.springframework.org/schema/task
         http://www.springframework.org/schema/task/spring-task.xsd
         http://www.springframework.org/schema/aop
-        http://www.springframework.org/schema/aop/spring-aop.xsd
-     ">
-    
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+        <!-- 数据源 -->
+        <context:property-placeholder location="classpath:*.properties"/>
+        <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        	<property name="driverClass" value="${jdbc_driver}"/>
+        	<property name="jdbcUrl" value="${jdbc_url}"/>
+       	 	<property name="user" value="${jdbc_username}"/>
+        	<property name="password" value="${jdbc_password}"/>
+        </bean>
+        <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        	<property name="dataSource" ref="dataSource"/>
+        	<property name="mapperLocations" value="classpath:mapper/*.xml"/>
+        </bean>
+        <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        	<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+        	<property name="basePackage" value="lee.attendance.dao"/>
+        </bean>
   </beans>
