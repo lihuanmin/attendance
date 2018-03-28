@@ -84,6 +84,11 @@
   		<artifactId>mysql-connector-java</artifactId>
   		<version>5.1.38</version>
   	</dependency>
+  	<dependency>
+  		<groupId>c3p0</groupId>
+  		<artifactId>c3p0</artifactId>
+  		<version>0.9.1.2</version>
+  	</dependency>
   </dependencies>
   <!-- 构建项目需要的信息 -->
   <build>
@@ -102,5 +107,4 @@
   		</plugin>
   	</plugins>
   </build>
-  
 </project>
