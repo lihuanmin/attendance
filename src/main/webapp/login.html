@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<meta http-equiv="Pragma" content="no-cache"> 
+<meta http-equiv="Cache-Control" content="no-cache"> 
+<meta http-equiv="Expires" content="0"> 
+<title>后台登录</title> 
+<link href="/attendance/static/css/login.css" type="text/css" rel="stylesheet"> 
+<script type="text/javascript" src="/attendance/static/js/commons/common.js" ></script>
+<script type="text/javascript" src="/attendance/static/js/commons/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="/attendance/static/js/layer-v3.1.1/layer/layer.js"></script>
+</head> 
+<body> 
+<div id="login">
+    <div style="height: 10%;min-height: 120px"></div>
+    <div id="login-box">
+        <div class="login-box-square">
+            <img src="/attendance/static/img/avatar.jpg" class="content"/>
+        </div>
+        <p style="font-size: 24px;color: white;text-align: center">Lee</p>
+        <form  method="post" id="loginForm" action="return false">
+            <!--用户名-->
+            <input type="text" placeholder="请输入登录名" name="account" id="account" class="login-username">
+            <!--密码-->
+            <input type="text" placeholder="请输入密码" name="userPasswd" id="userPasswd"  class="login-password">
+            
+            <div class="btns">
+            	<input type="button" onclick="forget()" value="忘记密码" class="register-submit">
+            	<!--登陆按钮-->
+            	<input type="button" onclick="login()" value="登录" id="btn-login" class="login-submit"/>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+<script>
+	function forget(){
+		window.location.href = "http://www.baidu.com";
+	}
+	function login() {
+		if($("#account").val() === null || $("#account").val() === "") {
+			layer.msg("用户名不能为空");
+			return false;
+		}
+		if($("#userPasswd").val() === null || $("#userPasswd").val() === "") {
+			layer.msg("密码不能为空");
+			return false;
+		}
+		$.ajax({
+			url:getUrl("login/userLogin"),
+			data:$('#loginForm').serialize(),
+			success: function(data) {
+				alert(data.msg);
+				if(data.success){
+					window.location.href = "http://www.baidu.com";
+				}
+			}
+		});
+	}
+</script>
+</html>
