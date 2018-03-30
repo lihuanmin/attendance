@@ -82,4 +82,12 @@ public class UserInfo {
     public void setRealName(String realName) {
         this.realName = realName == null ? null : realName.trim();
     }
+
+	@Override
+	public String toString() {
+		return "UserInfo [id=" + id + ", portrait=" + portrait + ", introduce=" + introduce + ", sex=" + sex
+				+ ", registerTime=" + registerTime + ", email=" + email + ", phone=" + phone + ", realName=" + realName
+				+ "]";
+	}
+    
 }

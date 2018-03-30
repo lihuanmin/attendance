@@ -51,9 +51,9 @@
 			url:getUrl("login/userLogin"),
 			data:$('#loginForm').serialize(),
 			success: function(data) {
-				alert(data.msg);
+				layer.msg(data.msg);
 				if(data.success){
-					window.location.href = "http://www.baidu.com";
+					window.location.href = getUrl("home/home");
 				}
 			}
 		});

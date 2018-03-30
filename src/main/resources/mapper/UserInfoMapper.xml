@@ -125,4 +125,12 @@
       real_name = #{realName,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <!-- 根据用户id查询用户姓名，头像信息 -->
+  <select id="selectById" parameterType="java.lang.Integer" resultType="UserInfo">
+  	select real_name as realName, portrait from user_info where id = #{userId,jdbcType=INTEGER}
+  </select>
+  <!-- 根据用户id查询用户账号，基本信息 -->
+  <select id="selectUserAccountById" parameterType="java.lang.Integer" resultType="UserAccountInfo">
+  	select account, user_info.id, portrait, introduce, sex, register_time as registerTime, email, phone, real_name as realName from user_info left join user_verification on user_info.id = user_verification.id where  user_info.id = #{userId,jdbcType=INTEGER}
+  </select>
 </mapper>

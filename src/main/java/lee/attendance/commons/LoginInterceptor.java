@@ -37,7 +37,7 @@ public class LoginInterceptor implements HandlerInterceptor{
 			Annotation methodAnnotation = method.getAnnotation(LoginRequired.class);
 			//使用了登录注解检查，用户是否登录了
 			if (classAnnotation != null || methodAnnotation != null) {
-				String verification = (String)request.getSession().getAttribute("verification");
+				String verification = (String)request.getSession().getAttribute("userAccount");
 				if (verification != null) 
 					return true;
 				else
