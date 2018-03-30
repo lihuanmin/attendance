@@ -92,7 +92,7 @@
   </update>
   <!-- 根据用户id查询用户菜单 -->
   <select id="selectMenuByUserId" parameterType="java.lang.Integer" resultType="Menu">
-  	SELECT menuName, url, parentId FROM menu WHERE id IN (
+  	SELECT menu.id, menuName, url, parentId FROM menu WHERE id IN (
 	SELECT menuId FROM role_menu WHERE roleId IN (
 	SELECT roleId FROM user_role WHERE userId = #{userId,jdbcType=INTEGER}))
   </select>
