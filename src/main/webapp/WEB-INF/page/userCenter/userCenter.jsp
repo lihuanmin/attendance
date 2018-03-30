@@ -21,7 +21,18 @@
 	<div style="border: 1px solid pink; width: 200px; height: 600px; float: left;">
 		<ul>
 			<c:forEach var="dir" items="${menuList}">
-				<li><a href="${dir.url}">${dir.menuName}</a></li>
+				<c:choose>
+					<c:when test="${dir.parentId==0}">
+						<li><span style="background-color: pink;">${dir.menuName}</span></li>
+						<c:forEach var="sonDir" items="${menuList}">
+							<c:choose>
+								<c:when test="${sonDir.parentId == dir.id}">
+									<li><span style="width:2px;">&nbsp;&nbsp;</span><a href="${sonDir.url}">${sonDir.menuName}</a></li>
+								</c:when>
+							</c:choose>
+						</c:forEach>
+					</c:when>
+				</c:choose>
 			</c:forEach>
 		</ul>
 	</div>
