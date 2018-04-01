@@ -1,7 +1,9 @@
 package lee.attendance.service;
 
+import lee.attendance.commons.ResultMsg;
 import lee.attendance.domain.UserInfo;
 import lee.attendance.domain.transfer.UserAccountInfo;
+import lee.attendance.domain.transfer.UserPassword;
 
 public interface UserCenterService {
 	/**
@@ -16,4 +18,6 @@ public interface UserCenterService {
 	 * @return
 	 */
 	public abstract int updateUserById(UserInfo userInfo);
+	
+	public abstract ResultMsg updatePassword(UserPassword userPassword);
 }

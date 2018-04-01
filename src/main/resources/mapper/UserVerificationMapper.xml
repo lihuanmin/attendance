@@ -90,7 +90,10 @@
       isLock = #{isLock,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectUserByAccount" resultType="lee.attendance.domain.UserVerification">
+  <select id="selectUserByAccount" resultType="UserVerification">
   	select * from user_verification where account = #{account,jdbcType=VARCHAR}
+  </select>
+  <select id="selectUserById" resultType="UserVerification">
+  	select salt, password from user_verification where id = #{userId,jdbcType=INTEGER}
   </select>
 </mapper>

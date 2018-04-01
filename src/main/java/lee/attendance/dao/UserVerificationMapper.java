@@ -22,4 +22,10 @@ public interface UserVerificationMapper {
      * @return
      */
     UserVerification selectUserByAccount(@Param("account")String account);
+    /**
+     * 根据用户id获取用户密码,salt
+     * @param userId
+     * @return
+     */
+    UserVerification selectUserById(@Param("userId")int userId);
 }
