@@ -114,7 +114,7 @@ public class UserCenterController {
         /*
          * 判断输入为空
          */
-        if(oldPassword==null||newPassword==null||confirmPassword==null){
+        if(oldPassword==null||"".equals(oldPassword)||newPassword==null||"".equals(newPassword)||confirmPassword==null||"".equals(confirmPassword)){
             return new ResultMsg(Boolean.FALSE,"信息不能为空");
         }
         /*

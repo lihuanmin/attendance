@@ -42,9 +42,23 @@ public class UserCenterServiceImpl implements UserCenterService{
 		 * 判断新旧密码是否一致
 		 */
 		if(userPassword.getOld().equals(userPassword.getNewPassword())) 
-			
-		
-		return null;
+			return new ResultMsg(Boolean.FALSE, "新旧密码一致");
+		if(!userPassword.getConfirm().equals(userPassword.getNewPassword()))
+			return new ResultMsg(Boolean.FALSE, "新密码和确认密码不一致");
+		/*
+		 * 封装数据到UserVerification里面
+		 */
+		UserVerification userVerification = new UserVerification();
+		userVerification.setSalt(userPassword.getSalt());
+		userVerification.setId(userPassword.getUserId());
+		userVerification.setPassword(MD5.GetMD5Code(userPassword.getNewPassword()+userPassword.getSalt()));
+		/*
+		 * 修改密码
+		 */
+		int result = userVerificationMapper.updateByPrimaryKeySelective(userVerification);
+		if(result <= 0)
+			return new ResultMsg(Boolean.FALSE, "更新密码失败");
+		return new ResultMsg(Boolean.TRUE, "更新成功");
 	}
 
 }

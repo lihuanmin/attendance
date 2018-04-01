@@ -38,22 +38,31 @@
 	</div>
 	<div style="border: 1px solid pink; float:left;">
 		<form id="userPasswd" action="returen false">
-			<input type="text" name="oldPassword"/><br/>
-			<input type="text" name="newPassword"/><br/>
-			<input type="text" name="confirmPassword"/><br/>
+			<input type="text" name="oldPassword" placeholder="旧密码"/><br/>
+			<input type="text" name="newPassword" placeholder="新密码"/><br/>
+			<input type="text" name="confirmPassword" placeholder="确认密码"/><br/>
 			<input type="button" onclick="updateUserPasswd()" value="修改"/>
 		</form>
 	</div>
 </body>
 <script>
-	function updateUserInfo() {
+	function updateUserPasswd() {
+		var oldP = $("input[name='oldPassword']").val();
+		var newP = $("input[name='newPassword']").val();
+		var conP = $("input[name='confirmPassword']").val();
+		if(oldP === ""||oldP ===null||newP===""||newP===null||conP===""||conP===null){
+			layer.msg("输入信息不能为空");
+			return;
+		}
+			
+		
 		$.ajax({
 			url:getUrl("userCenter/updatePassword"),
-			data: $('#pass').serialize(),
+			data: $('#userPasswd').serialize(),
 			success: function (data) {
 				alert(data.msg);
 				if(data.success) 
-					window.location.href = getUrl("userCenter/updatePwd");
+					window.location.href = getUrl("userCenter/passwd");
 			}
 		});
 	}
