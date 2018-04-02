@@ -29,4 +29,10 @@ public interface UserInfoMapper {
      * @return
      */
     UserAccountInfo selectUserAccountById(@Param("userId")int userId);
+    /**
+     * 根据真实姓名查询用户是否存在
+     * @param name
+     * @return
+     */
+    UserInfo selectByRealName(@Param("name")String name);
 }

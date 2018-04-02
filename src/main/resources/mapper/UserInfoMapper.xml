@@ -133,4 +133,9 @@
   <select id="selectUserAccountById" parameterType="java.lang.Integer" resultType="UserAccountInfo">
   	select account, user_info.id, portrait, introduce, sex, register_time as registerTime, email, phone, real_name as realName from user_info left join user_verification on user_info.id = user_verification.id where  user_info.id = #{userId,jdbcType=INTEGER}
   </select>
+  <!-- 根据真实姓名查询用户 -->
+  <select id="selectByRealName" parameterType="java.lang.String" resultType="UserInfo">
+  	select id, real_name as realName from user_info where real_name = #{name,jdbcType=VARCHAR}
+  </select>
+  
 </mapper>
