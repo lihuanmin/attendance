@@ -94,6 +94,18 @@
         <artifactId>fastjson</artifactId>
         <version>1.2.7</version>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/com.belerweb/pinyin4j -->
+<dependency>
+    <groupId>com.belerweb</groupId>
+    <artifactId>pinyin4j</artifactId>
+    <version>2.5.0</version>
+</dependency>
+    
+    <dependency>
+        <groupId>jstl</groupId>
+        <artifactId>jstl</artifactId>
+        <version>1.2</version>
+    </dependency>
   </dependencies>
   <!-- 构建项目需要的信息 -->
   <build>
