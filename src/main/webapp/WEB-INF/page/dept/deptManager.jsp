@@ -51,8 +51,8 @@
 				<td>id</td>
 				<td>名称</td>
 				<td>编号</td>
-				<td>口号</td>
 				<td>主管</td>
+				<td>口号</td>
 				<td>操作</td>
 			</tr>
 			<c:choose>

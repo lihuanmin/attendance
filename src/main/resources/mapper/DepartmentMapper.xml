@@ -111,8 +111,12 @@
   <select id="selectAllDept" resultType="Department">
   	select * from department
   </select>
-  <!-- 根据id获取部门 -->
+  <!-- 根据id获取部门 -->                                                       
   <select id="selectDeptById" parameterType="java.lang.Integer" resultType="Department">
   	select * from department where deptId=#{deptId,jdbcType=INTEGER}
+  </select>
+  <!-- 查询所有的部门，id，name -->
+  <select id="queryDept" resultType="Department">
+  	select deptId,deptName from department
   </select>
 </mapper>

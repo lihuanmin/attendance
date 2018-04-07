@@ -54,4 +54,9 @@ public interface DepartmentMapper {
      * @return
      */
     Department selectDeptById(@Param("deptId")int deptId);
+    /**
+     * 查询所有的部门name,id
+     * @return
+     */
+    List<Department> queryDept();
 }

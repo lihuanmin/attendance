@@ -28,4 +28,9 @@ public interface UserVerificationMapper {
      * @return
      */
     UserVerification selectUserById(@Param("userId")int userId);
+    /**
+     * 员工数量
+     * @return
+     */
+    Integer queryUserAccount();
 }

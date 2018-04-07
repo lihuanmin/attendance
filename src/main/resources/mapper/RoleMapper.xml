@@ -2,34 +2,32 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="lee.attendance.dao.RoleMapper" >
   <resultMap id="BaseResultMap" type="lee.attendance.domain.Role" >
-    <id column="  id" property="id" jdbcType="INTEGER" />
+    <id column="id" property="id" jdbcType="INTEGER" />
     <result column="roleName" property="roleName" jdbcType="VARCHAR" />
     <result column="roleDetail" property="roleDetail" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    "  id", roleName, roleDetail
+    id, roleName, roleDetail
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from id
-    where "  id" = #{id,jdbcType=INTEGER}
+    from role
+    where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from id
-    where "  id" = #{id,jdbcType=INTEGER}
+    delete from role
+    where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="lee.attendance.domain.Role" >
-    insert into id ("  id", roleName, roleDetail
-      )
-    values (#{id,jdbcType=INTEGER}, #{roleName,jdbcType=VARCHAR}, #{roleDetail,jdbcType=VARCHAR}
-      )
+    insert into role (id, roleName, roleDetail)
+    values (#{id,jdbcType=INTEGER}, #{roleName,jdbcType=VARCHAR}, #{roleDetail,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="lee.attendance.domain.Role" >
-    insert into id
+    insert into role
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
-        "  id",
+       id,
       </if>
       <if test="roleName != null" >
         roleName,
@@ -51,7 +49,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="lee.attendance.domain.Role" >
-    update id
+    update role
     <set >
       <if test="roleName != null" >
         roleName = #{roleName,jdbcType=VARCHAR},
@@ -60,12 +58,15 @@
         roleDetail = #{roleDetail,jdbcType=VARCHAR},
       </if>
     </set>
-    where "  id" = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="lee.attendance.domain.Role" >
-    update id
+    update role
     set roleName = #{roleName,jdbcType=VARCHAR},
       roleDetail = #{roleDetail,jdbcType=VARCHAR}
-    where "  id" = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="queryRole" resultType="Role">
+  	select id,roleName from role
+  </select>
 </mapper>

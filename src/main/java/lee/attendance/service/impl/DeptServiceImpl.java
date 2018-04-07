@@ -7,9 +7,11 @@ import org.springframework.stereotype.Service;
 
 import lee.attendance.commons.ResultMsg;
 import lee.attendance.dao.DepartmentMapper;
+import lee.attendance.dao.UserDeptMapper;
 import lee.attendance.dao.UserInfoMapper;
 import lee.attendance.dao.UserRoleMapper;
 import lee.attendance.domain.Department;
+import lee.attendance.domain.UserDept;
 import lee.attendance.domain.UserInfo;
 import lee.attendance.domain.UserRole;
 import lee.attendance.service.DeptService;
@@ -21,6 +23,8 @@ public class DeptServiceImpl implements DeptService{
 	private UserInfoMapper userInfoMapper;
 	@Autowired
 	private UserRoleMapper userRoleMapper;
+	@Autowired
+	private UserDeptMapper userDetMapper;
 	@Override
 	public String getIdByName(String deptName) {
 		return departmentMapper.getNameByName(deptName);
@@ -96,6 +100,21 @@ public class DeptServiceImpl implements DeptService{
 		int r = userRoleMapper.updateByUserId(userRole);
 		if(r <= 0)
 			return new ResultMsg(Boolean.FALSE, "修改角色失败");
+		/*
+		 * 将用户假如部门
+		 */
+		UserDept userDept = new UserDept();
+		userDept.setDeptId(department.getDeptId());
+		userDept.setUserId(userInfo.getId());
+		int ud = userDetMapper.insertSelective(userDept);
+		if(ud <= 0)
+			return new ResultMsg(Boolean.FALSE, "用户假如部门失败");
 		return new ResultMsg(Boolean.TRUE, "修改成功");
 	}
+
+	@Override
+	public List<Department> queryDept() {
+		return departmentMapper.queryDept();
+	}
+	
 }

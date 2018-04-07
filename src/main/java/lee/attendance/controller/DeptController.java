@@ -107,7 +107,7 @@ public class DeptController {
 		if(dept.getHead()==null||"".equals(dept.getHead()))
 			dept.setHead("暂无");
 		if(dept.getSlogan()==null||"".equals(dept.getSlogan()))
-			dept.setSlogan("胜利即是正义");
+			dept.setSlogan("zanwu");
 		return deptService.updateDept(dept);
 	}
 	@RequestMapping("queryDept")

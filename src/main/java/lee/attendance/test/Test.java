@@ -11,9 +11,8 @@ import org.mybatis.generator.internal.DefaultShellCallback;
 
 public class Test {
 	public static void main(String[] args) throws Exception{
-		// TODO Auto-generated method stub
 		try{
-			  List<String> warnings = new ArrayList<String>();
+			   List<String> warnings = new ArrayList<String>();
 			   boolean overwrite = true;
 			   File configFile = new File("src/main/resources/generatorConfig.xml");
 			   ConfigurationParser cp = new ConfigurationParser(warnings);

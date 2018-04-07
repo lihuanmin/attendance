@@ -35,4 +35,9 @@ public interface DeptService {
 	 * @return
 	 */
 	public abstract ResultMsg updateDept(Department department);
+	/**
+	 * 查询所有的部门
+	 * @return
+	 */
+	public abstract List<Department> queryDept();
 }

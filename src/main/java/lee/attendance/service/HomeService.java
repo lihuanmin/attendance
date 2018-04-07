@@ -2,8 +2,11 @@ package lee.attendance.service;
 
 import java.util.List;
 
+import lee.attendance.commons.ResultMsg;
+import lee.attendance.domain.Department;
 import lee.attendance.domain.Menu;
 import lee.attendance.domain.UserInfo;
+import lee.attendance.domain.transfer.User;
 
 public interface HomeService {
 	/**
@@ -18,4 +21,6 @@ public interface HomeService {
 	 * @return
 	 */
 	public abstract List<Menu> selectMenuByUserId(int userId);
+	
+	
 }

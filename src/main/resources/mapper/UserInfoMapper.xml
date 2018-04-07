@@ -126,7 +126,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <!-- 根据用户id查询用户姓名，头像信息 -->
-  <select id="selectById" parameterType="java.lang.Integer" resultType="UserInfo">
+  <select id="selectById"  resultType="UserInfo">
   	select real_name as realName, portrait from user_info where id = #{userId,jdbcType=INTEGER}
   </select>
   <!-- 根据用户id查询用户账号，基本信息 -->
