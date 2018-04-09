@@ -55,6 +55,15 @@ public class MemberController {
 		return JSON.toJSONString(list);
 	}
 	/**
+	 * 查询角色
+	 * @return
+	 */
+	@RequestMapping("queryRole")
+	@ResponseBody
+	public String queryRole() {
+		return JSON.toJSONString(memberService.queryRole());
+	}
+	/**
 	 * 添加成员
 	 * @param user
 	 * @return
@@ -74,9 +83,9 @@ public class MemberController {
 			return new ResultMsg(Boolean.FALSE, "角色不能为空");
 		return memberService.addMember(user);
 	}
-	@RequestMapping("queryRole")
+	@RequestMapping("memberList")
 	@ResponseBody
-	public String queryRole() {
-		return JSON.toJSONString(memberService.queryRole());
+	public String memberList() {
+		return "";
 	}
 }

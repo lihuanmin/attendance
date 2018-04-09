@@ -19,4 +19,6 @@ public interface MemberService {
 	 */
 	public abstract List<Role> queryRole();
 	
+	
+	
 }
