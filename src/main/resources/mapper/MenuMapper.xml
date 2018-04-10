@@ -96,4 +96,8 @@
 	SELECT menuId FROM role_menu WHERE roleId IN (
 	SELECT roleId FROM user_role WHERE userId = #{userId,jdbcType=INTEGER}))
   </select>
+  <!-- 查询所有的菜单 -->
+  <select id="selectAllMenu" resultType="Menu">
+  	select id, menuName, parentId from menu
+  </select>
 </mapper>

@@ -24,4 +24,9 @@ public interface MenuMapper {
      * @return
      */
     List<Menu> selectMenuByUserId(@Param("userId")int userId);
+    /**
+     * 查询所有的菜单
+     * @return
+     */
+    List<Menu> selectAllMenu();
 }
