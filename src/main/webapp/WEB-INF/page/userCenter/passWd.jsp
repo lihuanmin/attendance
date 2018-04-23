@@ -9,25 +9,31 @@
 <script type="text/javascript" src="/attendance/static/js/commons/common.js" ></script>
 <script type="text/javascript" src="/attendance/static/js/commons/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="/attendance/static/js/layer-v3.1.1/layer/layer.js"></script>
+<link href="/attendance/static/css/common.css" rel="stylesheet" type="text/css" />
 <title>个人中心</title>
 </head>
 <body>
-	<div style="border: 1px solid pink; width: 100px; height: 100px;">
-		<div>${userInfo.realName}</div>
-		<span> <img src="${userInfo.portrait}" width="60px"
-			height="60px" />
-		</span>
+<div class="nav-top">
+		<img class="avatar" src="${userInfo.portrait}" title="${userInfo.realName}"/>
+		<ul>
+			<li>
+				<a href="#">nav1</a>
+			</li>
+			<li>
+				<a href="#">nav1</a>
+			</li>
+		</ul>
 	</div>
-	<div style="border: 1px solid pink; width: 200px; height: 600px; float: left;">
+	<div class="nav">
 		<ul>
 			<c:forEach var="dir" items="${menuList}">
 				<c:choose>
 					<c:when test="${dir.parentId==0}">
-						<li><span style="background-color: pink;">${dir.menuName}</span></li>
+						<li class="nav-1"><span>${dir.menuName}</span></li>
 						<c:forEach var="sonDir" items="${menuList}">
 							<c:choose>
 								<c:when test="${sonDir.parentId == dir.id}">
-									<li><span style="width:2px;">&nbsp;&nbsp;</span><a href="${sonDir.url}">${sonDir.menuName}</a></li>
+									<li class="nav-2"><span style="width:2px;">&nbsp;&nbsp;</span><a href="${sonDir.url}">${sonDir.menuName}</a></li>
 								</c:when>
 							</c:choose>
 						</c:forEach>
@@ -36,7 +42,7 @@
 			</c:forEach>
 		</ul>
 	</div>
-	<div style="border: 1px solid pink; float:left;">
+	<div class="content"">
 		<form id="userPasswd" action="returen false">
 			<input type="text" name="oldPassword" placeholder="旧密码"/><br/>
 			<input type="text" name="newPassword" placeholder="新密码"/><br/>

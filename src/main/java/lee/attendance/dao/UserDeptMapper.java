@@ -1,5 +1,7 @@
 package lee.attendance.dao;
 
+import org.apache.ibatis.annotations.Param;
+
 import lee.attendance.domain.UserDept;
 
 public interface UserDeptMapper {
@@ -14,4 +16,10 @@ public interface UserDeptMapper {
     int updateByPrimaryKeySelective(UserDept record);
 
     int updateByPrimaryKey(UserDept record);
+    /**
+     * 根据用户id查询部门id
+     * @param userId
+     * @return
+     */
+    int findDeptIdByUserId(@Param("userId")int userId);
 }

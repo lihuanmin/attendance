@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import lee.attendance.commons.LoginRequired;
 import lee.attendance.commons.ResultMsg;
 import lee.attendance.service.LoginService;
 
@@ -36,5 +37,10 @@ public class LoginController {
 	            return new ResultMsg(Boolean.FALSE, "用户名或密码不能为空");
 	     ResultMsg msg = loginService.login(account, userPasswd, req);   
 		 return msg;
+	}
+	@RequestMapping("temp")
+	@LoginRequired
+	public String temp() {
+		return "temp/temp";
 	}
 }

@@ -6,6 +6,12 @@
     <result column="roleName" property="roleName" jdbcType="VARCHAR" />
     <result column="roleDetail" property="roleDetail" jdbcType="VARCHAR" />
   </resultMap>
+  <resultMap id="roleMenu" type="lee.attendance.domain.transfer.RoleMenuInfo">
+  	 <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="roleName" property="roleName" jdbcType="VARCHAR" />
+    <result column="roleDetail" property="roleDetail" jdbcType="VARCHAR" />
+    <collection property="menu" ofType="Menu" select="getMenu" column="id"></collection>
+  </resultMap>
   <sql id="Base_Column_List" >
     id, roleName, roleDetail
   </sql>
@@ -24,6 +30,9 @@
     values (#{id,jdbcType=INTEGER}, #{roleName,jdbcType=VARCHAR}, #{roleDetail,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="lee.attendance.domain.Role" >
+   <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+	          SELECT LAST_INSERT_ID()
+	  </selectKey>
     insert into role
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -48,9 +57,9 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="lee.attendance.domain.Role" >
+  <update id="updateByPrimaryKeySelective" parameterType="lee.attendance.domain.Role">
     update role
-    <set >
+    <set>
       <if test="roleName != null" >
         roleName = #{roleName,jdbcType=VARCHAR},
       </if>
@@ -66,7 +75,14 @@
       roleDetail = #{roleDetail,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <!-- 查询所有的角色 -->
   <select id="queryRole" resultType="Role">
-  	select id,roleName from role
+  	select id,roleName,roleDetail from role
+  </select>
+  <select id="findAllRoleMenu" parameterType="java.lang.Integer" resultMap="roleMenu">
+  	select * from role where id = #{roleId, jdbcType=INTEGER}
+  </select>
+  <select id="getMenu" parameterType="java.lang.Integer" resultType="Menu">
+  	select * from menu where id in (select menuId from role_menu where roleId=#{id, jdbcType=INTEGER})
   </select>
 </mapper>

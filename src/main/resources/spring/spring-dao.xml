@@ -33,4 +33,5 @@
         	<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
         	<property name="basePackage" value="lee.attendance.dao"/>
         </bean>
+        <import resource="classpath:configure/quartz.xml"/>
   </beans>

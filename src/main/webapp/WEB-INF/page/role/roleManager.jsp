@@ -13,25 +13,31 @@
 <script type="text/javascript" src="/attendance/static/js/dict/pinyin_dict_withtone.js"></script>
 <script type="text/javascript" src="/attendance/static/js/dict/pinyinUtil.js"></script>
 <script type="text/javascript" src="/attendance/static/js/dict/simple-input-method.js"></script>
+<link href="/attendance/static/css/common.css" rel="stylesheet" type="text/css" />
 <title>个人中心</title>
 </head>
 <body>
-	<div style="border: 1px solid pink; width: 100px; height: 100px;">
-		<div>${userInfo.realName}</div>
-		<span> <img src="${userInfo.portrait}" width="60px"
-			height="60px" />
-		</span>
+	<div class="nav-top">
+		<img class="avatar" src="${userInfo.portrait}" title="${userInfo.realName}"/>
+		<ul>
+			<li>
+				<a href="#">nav1</a>
+			</li>
+			<li>
+				<a href="#">nav1</a>
+			</li>
+		</ul>
 	</div>
-	<div style="border: 1px solid pink; width: 200px; height: 600px; float: left;">
+	<div class="nav">
 		<ul>
 			<c:forEach var="dir" items="${menuList}">
 				<c:choose>
-			 		<c:when test="${dir.parentId==0}">
-						<li><span style="background-color: pink;">${dir.menuName}</span></li>
+					<c:when test="${dir.parentId==0}">
+						<li class="nav-1"><span>${dir.menuName}</span></li>
 						<c:forEach var="sonDir" items="${menuList}">
 							<c:choose>
 								<c:when test="${sonDir.parentId == dir.id}">
-									<li><span style="width:2px;">&nbsp;&nbsp;</span><a href="${sonDir.url}">${sonDir.menuName}</a></li>
+									<li class="nav-2"><span style="width:2px;">&nbsp;&nbsp;</span><a href="${sonDir.url}">${sonDir.menuName}</a></li>
 								</c:when>
 							</c:choose>
 						</c:forEach>
@@ -40,11 +46,24 @@
 			</c:forEach>
 		</ul>
 	</div>
-	<div style="border: 1px solid pink; float:left;">
-		角色管理
+	<div class="content">
+	<table>
+		<tr>
+		<td>角色编号</td>
+		<td>角色名称</td>
+		<td>角色详情</td>
+		<td colspan="2">操作</td>
+		</tr>
+		<c:forEach var="dir" items="${roleList}">
+			<tr>
+				<td>${dir.id}</td>
+				<td>${dir.roleName}</td>
+				<td>${dir.roleDetail}</td>
+				<td><a href="/attendance/role/roleDetail?roleId=${dir.id}">详情</a></td>
+				<td><a href="/attendance/role/updateRole?roleId=${dir.id}">修改</a></td>
+			</tr>
+		</c:forEach>
+		</table>
 	</div>
 </body>
-<script type="text/javascript">
-</script>
-
 </html>

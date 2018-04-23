@@ -32,7 +32,7 @@ public interface DeptService {
 	/**
 	 * 修改部门信息根据id
 	 * @param department
-	 * @return
+	 * @return 
 	 */
 	public abstract ResultMsg updateDept(Department department);
 	/**
@@ -40,4 +40,11 @@ public interface DeptService {
 	 * @return
 	 */
 	public abstract List<Department> queryDept();
+	/**
+	 * 搜索部门成员
+	 * @param deptId
+	 * @return
+	 */
+	public abstract List<String> search(int deptId);
+	
 }

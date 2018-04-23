@@ -59,4 +59,9 @@ public interface DepartmentMapper {
      * @return
      */
     List<Department> queryDept();
+    /**
+     * 搜索部门成员
+     * @return
+     */
+    List<String> search(@Param("deptId")int deptId);
 }

@@ -68,4 +68,8 @@
       deptId = #{deptId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+   <!-- 根据用户id，查询部门id -->
+  <select id="findDeptIdByUserId"  resultType="java.lang.Integer">
+  	select deptId from user_dept where userId = #{userId,jdbcType=INTEGER}
+  </select>
 </mapper>

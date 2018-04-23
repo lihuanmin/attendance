@@ -100,4 +100,9 @@
   <select id="selectAllMenu" resultType="Menu">
   	select id, menuName, parentId from menu
   </select>
+  <!-- 根据角色id查询菜单 -->
+  <select id="selectMenuByRole" parameterType="java.lang.Integer" resultType="Menu">
+  	select * from menu where id in (select menuId from role_menu where roleId = #{roleId})
+  </select>
+ 
 </mapper>

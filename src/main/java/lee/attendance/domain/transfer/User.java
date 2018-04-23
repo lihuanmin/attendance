@@ -7,7 +7,13 @@ public class User {
 	private String userName;
 	private String prefixAccount;
 	private String suffixAccount;
-	
+	private String number;
+	public String getNumber() {
+		return number;
+	}
+	public void setNumber(String number) {
+		this.number = number;
+	}
 	public String getRole() {
 		return role;
 	}

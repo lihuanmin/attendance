@@ -9,25 +9,31 @@
 <script type="text/javascript" src="/attendance/static/js/commons/common.js" ></script>
 <script type="text/javascript" src="/attendance/static/js/commons/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="/attendance/static/js/layer-v3.1.1/layer/layer.js"></script>
+<link href="/attendance/static/css/common.css" rel="stylesheet" type="text/css" />
 <title>个人中心</title>
 </head>
 <body onload="getUserInfo()">
-	<div style="border: 1px solid pink; width: 100px; height: 100px;">
-		<div>${userInfo.realName}</div>
-		<span> <img src="${userInfo.portrait}" width="60px"
-			height="60px" />
-		</span>
+	<div class="nav-top">
+		<img class="avatar" src="${userInfo.portrait}" title="${userInfo.realName}"/>
+		<ul>
+			<li>
+				<a href="#">nav1</a>
+			</li>
+			<li>
+				<a href="#">nav1</a>
+			</li>
+		</ul>
 	</div>
-	<div style="border: 1px solid pink; width: 200px; height: 600px; float: left;">
+	<div class="nav">
 		<ul>
 			<c:forEach var="dir" items="${menuList}">
 				<c:choose>
 					<c:when test="${dir.parentId==0}">
-						<li><span style="background-color: pink;">${dir.menuName}</span></li>
+						<li class="nav-1"><span>${dir.menuName}</span></li>
 						<c:forEach var="sonDir" items="${menuList}">
 							<c:choose>
 								<c:when test="${sonDir.parentId == dir.id}">
-									<li><span style="width:2px;">&nbsp;&nbsp;</span><a href="${sonDir.url}">${sonDir.menuName}</a></li>
+									<li class="nav-2"><span style="width:2px;">&nbsp;&nbsp;</span><a href="${sonDir.url}">${sonDir.menuName}</a></li>
 								</c:when>
 							</c:choose>
 						</c:forEach>
@@ -36,14 +42,14 @@
 			</c:forEach>
 		</ul>
 	</div>
-	<div style="border: 1px solid pink; float:left;">
+	<div class="content">
 		<form id="userInfo" action="returen false">
-			<input type="text" id="account" name="account" disabled="true"/>账号<br/>
-			<input type="text" id="realName" name="realName" disabled="true"/>姓名<br/>
-			<input type="text" id="registerTime" name="registerTIme" disabled="true"/>时间<br/>
-			<select name="sex" id="sex"></select>性别<br/>
-			<input type="text" id="email" name="email"/>邮箱<br/>
-			<input type="text" id="phone" name="phone"/>电话<br/>
+			<input type="text" id="account" name="account" disabled="true"/><br/>
+			<input type="text" id="realName" name="realName" disabled="true"/><br/>
+			<input type="text" id="registerTime" name="registerTIme" disabled="true"/><br/>
+			<select name="sex" id="sex"></select><br/>
+			<input type="text" id="email" name="email"/><br/>
+			<input type="text" id="phone" name="phone"/><br/>
 			<textarea name="introduce" id="introduce" rows="5" cols="10">
 			</textarea><br/>
 			<input type="button" onclick="updateUserInfo()" value="修改"/>

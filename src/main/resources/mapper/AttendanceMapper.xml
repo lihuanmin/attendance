@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lee.attendance.dao.AttendanceMapper">
+  <resultMap id="BaseResultMap" type="lee.attendance.domain.Attendance">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="userId" jdbcType="INTEGER" property="userId" />
+    <result column="workTime" jdbcType="TIMESTAMP" property="workTime" />
+    <result column="endTime" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="amStatus" jdbcType="INTEGER" property="amStatus" />
+    <result column="pmStatus" jdbcType="INTEGER" property="pmStatus" />
+    <result column="reference" jdbcType="DATE" property="reference" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, userId, workTime, endTime, amStatus, pmStatus, reference
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from attendance
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from attendance
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="lee.attendance.domain.Attendance">
+    insert into attendance (id, userId, workTime, 
+      endTime, amStatus, pmStatus, 
+      reference)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{workTime,jdbcType=TIMESTAMP}, 
+      #{endTime,jdbcType=TIMESTAMP}, #{amStatus,jdbcType=INTEGER}, #{pmStatus,jdbcType=INTEGER}, 
+      #{reference,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="lee.attendance.domain.Attendance">
+    insert into attendance
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        userId,
+      </if>
+      <if test="workTime != null">
+        workTime,
+      </if>
+      <if test="endTime != null">
+        endTime,
+      </if>
+      <if test="amStatus != null">
+        amStatus,
+      </if>
+      <if test="pmStatus != null">
+        pmStatus,
+      </if>
+      <if test="reference != null">
+        reference,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="workTime != null">
+        #{workTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="amStatus != null">
+        #{amStatus,jdbcType=INTEGER},
+      </if>
+      <if test="pmStatus != null">
+        #{pmStatus,jdbcType=INTEGER},
+      </if>
+      <if test="reference != null">
+        #{reference,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="lee.attendance.domain.Attendance">
+    update attendance
+    <set>
+      <if test="userId != null">
+        userId = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="workTime != null">
+        workTime = #{workTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        endTime = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="amStatus != null">
+        amStatus = #{amStatus,jdbcType=INTEGER},
+      </if>
+      <if test="pmStatus != null">
+        pmStatus = #{pmStatus,jdbcType=INTEGER},
+      </if>
+      <if test="reference != null">
+        reference = #{reference,jdbcType=DATE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="lee.attendance.domain.Attendance">
+    update attendance
+    set userId = #{userId,jdbcType=INTEGER},
+      workTime = #{workTime,jdbcType=TIMESTAMP},
+      endTime = #{endTime,jdbcType=TIMESTAMP},
+      amStatus = #{amStatus,jdbcType=INTEGER},
+      pmStatus = #{pmStatus,jdbcType=INTEGER},
+      reference = #{reference,jdbcType=DATE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <!-- 插入数据 -->
+  <insert id="insertAllUserAtten" parameterType="java.util.List">
+  	insert into attendance(userId, reference) values
+  	<foreach collection="list"  item="userId" separator=",">
+  		(#{userId,jdbcType=INTEGER}, CURDATE())
+  	</foreach>
+  </insert>
+  <!-- 查询数据 -->
+  <select id="selectByUserId"  resultType="Attendance">
+  		select * from attendance where userId = #{userId,jdbcType=INTEGER} and  reference = #{reference,jdbcType=DATE}
+  </select>
+</mapper>

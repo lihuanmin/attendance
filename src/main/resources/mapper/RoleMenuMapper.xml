@@ -68,4 +68,14 @@
       menuId = #{menuId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <insert id="insertRoleMenu">
+  		insert into role_menu(roleId, menuId) values
+  		<foreach collection="menu" item="menuId" separator=",">
+  			(#{roleId,jdbcType=INTEGER},#{menuId,jdbcType=INTEGER})
+  		</foreach>
+  </insert>
+  <!-- 根据角色id删除角色菜单 -->
+  <delete id="deleteMenuById" parameterType="java.lang.Integer">
+  	delete from role_menu where roleId = #{roleId,jdbcType=INTEGER}
+  </delete>
 </mapper>

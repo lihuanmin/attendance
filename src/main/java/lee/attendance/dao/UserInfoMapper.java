@@ -35,4 +35,11 @@ public interface UserInfoMapper {
      * @return
      */
     UserInfo selectByRealName(@Param("name")String name);
+   /**
+    * 查询用户是否属于该部门
+    * @param name
+    * @param deptId
+    * @return
+    */
+    UserInfo findUserBlDe(@Param("name")String name, @Param("deptId")int deptId);
 }

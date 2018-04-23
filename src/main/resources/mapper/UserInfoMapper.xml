@@ -137,5 +137,8 @@
   <select id="selectByRealName" parameterType="java.lang.String" resultType="UserInfo">
   	select id, real_name as realName from user_info where real_name = #{name,jdbcType=VARCHAR}
   </select>
-  
+  <!-- 根据部门id，查询该用户是否属于该部门 -->
+  <select id="findUserBlDe" resultType="UserInfo">
+  	select user_info.id from user_info left join user_dept on user_dept.userId = user_info.id where user_dept.deptId = #{deptId, jdbcType=INTEGER} and user_info.real_name=#{name,jdbcType=VARCHAR}
+  </select>
 </mapper>

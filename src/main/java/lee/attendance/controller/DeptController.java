@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSON;
+
 import lee.attendance.commons.LoginRequired;
 import lee.attendance.commons.ResultMsg;
 import lee.attendance.domain.Department;
@@ -99,17 +101,29 @@ public class DeptController {
 			model.addAttribute("list", list);
 		return "dept/deptManager";
 	}
+	/**
+	 * 更新部门
+	 * @param dept
+	 * @return
+	 */
 	@RequestMapping("updateDept")
 	@ResponseBody
 	public ResultMsg updateDept(Department dept) {
 		if(null==dept.getDeptName()||"".equals(dept.getDeptName())||null==dept.getDeptCode()||"".equals(dept.getDeptName()))
 			return new ResultMsg(Boolean.FALSE, "部门信息不能为空");
-		if(dept.getHead()==null||"".equals(dept.getHead()))
+		if(dept.getHead()==null||"".equals(dept.getHead())||"暂无".equals(dept.getHead()))
 			dept.setHead("暂无");
 		if(dept.getSlogan()==null||"".equals(dept.getSlogan()))
 			dept.setSlogan("zanwu");
 		return deptService.updateDept(dept);
 	}
+	/**
+	 * 查询部门
+	 * @param deptId
+	 * @param req
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("queryDept")
 	public String queryDept(@RequestParam("deptId")int deptId,HttpServletRequest req, Model model) {
 		int userId = (int)req.getSession().getAttribute("userId");
@@ -122,6 +136,15 @@ public class DeptController {
 		Department department = deptService.queryDeptById(deptId);
 		model.addAttribute("dept", department);
 		return "dept/editDept";
+	}
+	/**
+	 * 搜索部门成员
+	 * @return
+	 */
+	@RequestMapping("search")
+	@ResponseBody
+	public String search(@RequestParam("deptId")int deptId) {
+		return JSON.toJSONString(deptService.search(deptId));
 	}
 }
 

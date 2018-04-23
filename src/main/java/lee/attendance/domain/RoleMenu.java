@@ -1,12 +1,13 @@
 package lee.attendance.domain;
 
+
 public class RoleMenu {
     private Integer id;
 
     private Integer roleId;
 
     private Integer menuId;
-
+    
 	public Integer getId() {
 		return id;
 	}

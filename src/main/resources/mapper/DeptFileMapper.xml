@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="lee.attendance.dao.DeptFileMapper" >
+  <resultMap id="BaseResultMap" type="lee.attendance.domain.DeptFile" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="deptId" property="deptId" jdbcType="INTEGER" />
+    <result column="fileUrl" property="fileUrl" jdbcType="VARCHAR" />
+    <result column="userId" property="userId" jdbcType="INTEGER" />
+    <result column="fileTime" property="fileTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, deptId, fileUrl, userId, fileTime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from dept_file
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from dept_file
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="lee.attendance.domain.DeptFile" >
+    insert into dept_file (id, deptId, fileUrl, 
+      userId, fileTime)
+    values (#{id,jdbcType=INTEGER}, #{deptId,jdbcType=INTEGER}, #{fileUrl,jdbcType=VARCHAR}, 
+      #{userId,jdbcType=INTEGER}, #{fileTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="lee.attendance.domain.DeptFile" >
+    insert into dept_file
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="deptId != null" >
+        deptId,
+      </if>
+      <if test="fileUrl != null" >
+        fileUrl,
+      </if>
+      <if test="userId != null" >
+        userId,
+      </if>
+      <if test="fileTime != null" >
+        fileTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="deptId != null" >
+        #{deptId,jdbcType=INTEGER},
+      </if>
+      <if test="fileUrl != null" >
+        #{fileUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="fileTime != null" >
+        #{fileTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="lee.attendance.domain.DeptFile" >
+    update dept_file
+    <set >
+      <if test="deptId != null" >
+        deptId = #{deptId,jdbcType=INTEGER},
+      </if>
+      <if test="fileUrl != null" >
+        fileUrl = #{fileUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        userId = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="fileTime != null" >
+        fileTime = #{fileTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="lee.attendance.domain.DeptFile" >
+    update dept_file
+    set deptId = #{deptId,jdbcType=INTEGER},
+      fileUrl = #{fileUrl,jdbcType=VARCHAR},
+      userId = #{userId,jdbcType=INTEGER},
+      fileTime = #{fileTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="findAllFile" resultType="UserFile">
+  	select dept_file.*,user_info.real_name as userName from dept_file left join user_info on user_info.id = dept_file.userId
+  </select>
+</mapper>

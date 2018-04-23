@@ -29,4 +29,10 @@ public interface MenuMapper {
      * @return
      */
     List<Menu> selectAllMenu();
+    /**
+     * @param roleId
+     * @return
+     */
+    List<Menu> selectMenuByRole(@Param("roleId")int roleId);
+   
 }

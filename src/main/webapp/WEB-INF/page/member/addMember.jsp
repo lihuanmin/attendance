@@ -13,25 +13,31 @@
 <script type="text/javascript" src="/attendance/static/js/dict/pinyin_dict_withtone.js"></script>
 <script type="text/javascript" src="/attendance/static/js/dict/pinyinUtil.js"></script>
 <script type="text/javascript" src="/attendance/static/js/dict/simple-input-method.js"></script>
+<link href="/attendance/static/css/common.css" rel="stylesheet" type="text/css" />
 <title>个人中心</title>
 </head>
 <body onload="query();">
-	<div style="border: 1px solid pink; width: 100px; height: 100px;">
-		<div>${userInfo.realName}</div>
-		<span> <img src="${userInfo.portrait}" width="60px"
-			height="60px" />
-		</span>
+	<div class="nav-top">
+		<img class="avatar" src="${userInfo.portrait}" title="${userInfo.realName}"/>
+		<ul>
+			<li>
+				<a href="#">nav1</a>
+			</li>
+			<li>
+				<a href="#">nav1</a>
+			</li>
+		</ul>
 	</div>
-	<div style="border: 1px solid pink; width: 200px; height: 600px; float: left;">
+	<div class="nav">
 		<ul>
 			<c:forEach var="dir" items="${menuList}">
 				<c:choose>
-			 		<c:when test="${dir.parentId==0}">
-						<li><span style="background-color: pink;">${dir.menuName}</span></li>
+					<c:when test="${dir.parentId==0}">
+						<li class="nav-1"><span>${dir.menuName}</span></li>
 						<c:forEach var="sonDir" items="${menuList}">
 							<c:choose>
 								<c:when test="${sonDir.parentId == dir.id}">
-									<li><span style="width:2px;">&nbsp;&nbsp;</span><a href="${sonDir.url}">${sonDir.menuName}</a></li>
+									<li class="nav-2"><span style="width:2px;">&nbsp;&nbsp;</span><a href="${sonDir.url}">${sonDir.menuName}</a></li>
 								</c:when>
 							</c:choose>
 						</c:forEach>
@@ -40,18 +46,19 @@
 			</c:forEach>
 		</ul>
 	</div>
-	<div style="border: 1px solid pink; float:left;">
+	<div class="content">
 		<form id="addMem" action="return false;">
-			所属部门：<select id="dept" name="deptId">
+			<select id="dept" name="deptId">
 						<option value="">请选择</option>
 					</select><br/>
-			员工姓名：<input type="text" id="userName" name="userName" onblur="setAccount()"/><br/>
-			员工角色：<select id="role" name="role">
+			<input type="text" id="userName" name="userName" placeholder="员工姓名" onblur="setAccount()"/><br/>
+			<select id="role" name="role">
 						<option value="">请选择角色</option>
 					</select><br/>
-			初始密码：<input type="text" value="123456" name="userPasswd" readonly="true"/><br/>
-			员工账号: <input type="text" id="prefixAccount" name="prefixAccount" readonly="true"/>-<input type="text" id="suffixAccount" name="suffixAccount" readonly="true"/><br/>
-			员工性别：<select name="sex">
+			<input type="text" value="123456" name="userPasswd" readonly="true"/><br/>
+			<input id="number" type="text" name="number" readonly="true"/><br/>
+			<input type="text" id="prefixAccount" name="prefixAccount" readonly="true"/>-<input type="text" id="suffixAccount" name="suffixAccount" readonly="true"/><br/>
+			<select name="sex">
 						<option value="0">女</option>
 						<option value="1">男</option>
 					</select><br/>
@@ -87,6 +94,15 @@
 				}
 			});
 		}
+		queryCount();
+		function queryCount(){
+			$.ajax({
+				url:getUrl("member/queryCount"),
+				success:function(data) {
+					$("#number").val(data);
+				}
+			});
+		}
 		function getPinyin(value)
 		{
 			var polyphone = null;
@@ -117,7 +133,7 @@
 				success:function(data) {
 					layer.msg(data.msg);
 					if(data.success) 
-						window.location.href = getUrl("home/home");
+						window.location.href = getUrl("member/memberListPage");
 				}
 			});
 		}

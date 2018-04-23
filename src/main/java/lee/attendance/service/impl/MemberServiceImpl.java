@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lee.attendance.commons.ResultMsg;
+import lee.attendance.commons.page.PageResponse;
 import lee.attendance.dao.DepartmentMapper;
 import lee.attendance.dao.RoleMapper;
 import lee.attendance.dao.UserDeptMapper;
@@ -19,6 +20,7 @@ import lee.attendance.domain.UserDept;
 import lee.attendance.domain.UserInfo;
 import lee.attendance.domain.UserRole;
 import lee.attendance.domain.UserVerification;
+import lee.attendance.domain.transfer.AllUser;
 import lee.attendance.domain.transfer.User;
 import lee.attendance.service.MemberService;
 import lee.attendance.utils.MD5;
@@ -40,15 +42,12 @@ public class MemberServiceImpl implements MemberService{
 	private UserRoleMapper userRoleMapper;
 	@Override
 	public ResultMsg addMember(User user) {
-		/*
-		 *添加用户账户 
-		 */
-		int userCount = userVerificationMapper.queryUserAccount() + 1;
+		
 		UserVerification userVerification = new UserVerification();
 		String salt = Salt.salt();
 		userVerification.setSalt(salt);
 		userVerification.setPassword(MD5.GetMD5Code("123456"+salt));
-		userVerification.setAccount(user.getPrefixAccount()+"-"+user.getSuffixAccount()+userCount);
+		userVerification.setAccount(user.getPrefixAccount()+"-"+user.getSuffixAccount()+"-"+user.getNumber());
 		int vRe = userVerificationMapper.insertSelective(userVerification);
 		if(vRe == 0)
 			return new ResultMsg(Boolean.FALSE, "添加失败");
@@ -97,5 +96,18 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public List<Role> queryRole() {
 		return roleMapper.queryRole();
+	}
+	@Override
+	public int queryCount() {
+		return userVerificationMapper.queryUserAccount() + 1;
+	}
+	@Override
+	public PageResponse<AllUser> findAllUser(String dept, String realName, int pageNumber, int pageSize) {
+		int memberCount = userVerificationMapper.queryUserAccount();
+		List<AllUser> list = userVerificationMapper.queryAllUserDeptRole(realName, dept, pageSize, pageNumber);
+		PageResponse<AllUser> pr = new PageResponse<AllUser>();
+		pr.setDataList(list);
+		pr.setTotalRecord(memberCount);
+		return pr;
 	}
 }

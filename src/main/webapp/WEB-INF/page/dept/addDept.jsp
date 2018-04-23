@@ -13,25 +13,31 @@
 <script type="text/javascript" src="/attendance/static/js/dict/pinyin_dict_withtone.js"></script>
 <script type="text/javascript" src="/attendance/static/js/dict/pinyinUtil.js"></script>
 <script type="text/javascript" src="/attendance/static/js/dict/simple-input-method.js"></script>
+<link href="/attendance/static/css/common.css" rel="stylesheet" type="text/css" />
 <title>个人中心</title>
 </head>
 <body>
-	<div style="border: 1px solid pink; width: 100px; height: 100px;">
-		<div>${userInfo.realName}</div>
-		<span> <img src="${userInfo.portrait}" width="60px"
-			height="60px" />
-		</span>
+	<div class="nav-top">
+		<img class="avatar" src="${userInfo.portrait}" title="${userInfo.realName}"/>
+		<ul>
+			<li>
+				<a href="#">nav1</a>
+			</li>
+			<li>
+				<a href="#">nav1</a>
+			</li>
+		</ul>
 	</div>
-	<div style="border: 1px solid pink; width: 200px; height: 600px; float: left;">
+	<div class="nav">
 		<ul>
 			<c:forEach var="dir" items="${menuList}">
 				<c:choose>
-			 		<c:when test="${dir.parentId==0}">
-						<li><span style="background-color: pink;">${dir.menuName}</span></li>
+					<c:when test="${dir.parentId==0}">
+						<li class="nav-1"><span>${dir.menuName}</span></li>
 						<c:forEach var="sonDir" items="${menuList}">
 							<c:choose>
 								<c:when test="${sonDir.parentId == dir.id}">
-									<li><span style="width:2px;">&nbsp;&nbsp;</span><a href="${sonDir.url}">${sonDir.menuName}</a></li>
+									<li class="nav-2"><span style="width:2px;">&nbsp;&nbsp;</span><a href="${sonDir.url}">${sonDir.menuName}</a></li>
 								</c:when>
 							</c:choose>
 						</c:forEach>
@@ -40,13 +46,13 @@
 			</c:forEach>
 		</ul>
 	</div>
-	<div style="border: 1px solid pink; float:left;">
+	<div class="content">
 		<form id="userPasswd" action="returen false">
 			<input type="text" name="deptName" id="deptName" placeholder="部门名字" onblur="checkName()"/><br/>
 			<input type="text" name="deptCode" id="deptCode" placeholder="部门编号"/><br/>
 			<input type="text" name="head" id="head" placeholder="部门主管" disabled/><br/>
 			<textarea name="slogan" id="slogan" placeholder="部门口号">
-			</textarea>
+			</textarea><br/>
 			<input type="button" onclick="addDept()" value="添加"/>
 		</form>
 	</div>
@@ -93,7 +99,7 @@
 			success:function(data){
 				layer.msg(data.msg);
 				if(data){
-					//window.location.href = getUrl("userCenter/passwd");
+					window.location.href = getUrl("department/deptManager");
 				}else {
 					return;
 				}

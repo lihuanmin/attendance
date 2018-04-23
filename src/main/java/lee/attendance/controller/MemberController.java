@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
@@ -83,9 +84,37 @@ public class MemberController {
 			return new ResultMsg(Boolean.FALSE, "角色不能为空");
 		return memberService.addMember(user);
 	}
+	/**
+	 * 查询员工个数
+	 * @return
+	 */
+	@RequestMapping("queryCount")
+	@ResponseBody
+	public int findMemberNumber(){
+		return memberService.queryCount();
+	}
+	/**
+	 * 员工列表
+	 * @return
+	 */
+	@RequestMapping("memberListPage")
+	public String memberList(Model model, HttpServletRequest req) {
+		int userId = (int)req.getSession().getAttribute("userId");
+		//用户基本信息
+		UserInfo userInfo = homeService.selectUserById(userId);
+		//用户左侧菜单栏
+		List<Menu> menuList = homeService.selectMenuByUserId(userId);
+		model.addAttribute("userInfo", userInfo);
+		model.addAttribute("menuList", menuList);
+		return "member/memberList";
+	}
 	@RequestMapping("memberList")
 	@ResponseBody
-	public String memberList() {
-		return "";
+	public String memberList(
+			@RequestParam("realName")String realName,
+			@RequestParam("dept")String dept,
+			@RequestParam("pageNumber")int pageNumber, 
+			@RequestParam("pageSize")int pageSize) {
+		return JSON.toJSONString(memberService.findAllUser(dept, realName, pageNumber, pageSize));
 	}
 }

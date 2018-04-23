@@ -119,4 +119,8 @@
   <select id="queryDept" resultType="Department">
   	select deptId,deptName from department
   </select>
+  <!-- 搜索部门成员 -->
+  <select id="search" parameterType="java.lang.Integer" resultType="java.lang.String">
+  	select real_name from user_info left join user_dept on user_dept.userId = user_info.id where user_dept.deptId = #{deptId, jdbcType=INTEGER}
+  </select>
 </mapper>

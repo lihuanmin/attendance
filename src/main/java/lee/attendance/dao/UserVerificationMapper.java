@@ -1,8 +1,11 @@
 package lee.attendance.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 import lee.attendance.domain.UserVerification;
+import lee.attendance.domain.transfer.AllUser;
 
 public interface UserVerificationMapper {
     int deleteByPrimaryKey(Integer id);
@@ -33,4 +36,18 @@ public interface UserVerificationMapper {
      * @return
      */
     Integer queryUserAccount();
+    /**
+     * 查询所有员工的id
+     * @return
+     */
+    List<Integer> selectAllUserId();
+   /**
+    * 查询所有员工包括部门信息和角色信息
+    * @param realName
+    * @param dept
+    * @param pageSize
+    * @param pageNumber
+    * @return
+    */
+    List<AllUser> queryAllUserDeptRole(@Param("realName")String realName, @Param("dept")String dept, @Param("pageSize")int pageSize, @Param("pageNumber")int pageNumber);
 }
