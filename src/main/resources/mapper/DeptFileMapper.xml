@@ -91,6 +91,6 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="findAllFile" resultType="UserFile">
-  	select dept_file.*,user_info.real_name as userName from dept_file left join user_info on user_info.id = dept_file.userId
+  	select dept_file.*,user_info.real_name as userName from dept_file left join user_info on user_info.id = dept_file.userId where deptId = #{deptId,jdbcType=INTEGER}
   </select>
 </mapper>

@@ -57,17 +57,19 @@ public class MemberServiceImpl implements MemberService{
 		UserInfo userInfo = new UserInfo();
 		userInfo.setId(userVerification.getId());
 		userInfo.setPortrait("/attendance/static/img/background_a.jpg");
-		if(user.getSex()=="1")
+		System.out.println("sex"+user.getSex());
+		if("1".equals(user.getSex())){
 			userInfo.setSex(true);
-		else
+		}else {
 			userInfo.setSex(false);
+		}
 		userInfo.setRegisterTime(new Date());
 		userInfo.setEmail("");
 		userInfo.setPhone("");
 		userInfo.setIntroduce("");
 		userInfo.setRealName(user.getUserName());
 		if(userInfoMapper.insertSelective(userInfo)==0)
-			return new ResultMsg(Boolean.FALSE, "添加失败");
+			return new ResultMsg(Boolean.FALSE, "添加失败"); 
 		/*
 		 * 添加用户部门
 		 */

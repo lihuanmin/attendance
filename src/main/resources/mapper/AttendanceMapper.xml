@@ -125,4 +125,12 @@
   <select id="selectByUserId"  resultType="Attendance">
   		select * from attendance where userId = #{userId,jdbcType=INTEGER} and  reference = #{reference,jdbcType=DATE}
   </select>
+  <!-- 查询所有的考勤 -->
+  <select id="findAllAtten" resultType="Attendance">
+  	select * from attendance where userId = #{userId,jdbcType=INTEGER} and  <![CDATA[ reference >= #{startTime,jdbcType=DATE}  ]]> and <![CDATA[ reference <= #{endTime,jdbcType=DATE}  ]]>
+  </select>
+  <!-- 查询考勤数量 -->
+  <select id="findAttenCount" resultType="java.lang.Integer">
+  	select count(*) from attendance where userId = #{userId,jdbcType=INTEGER} and  <![CDATA[ reference >= #{startTime,jdbcType=DATE}  ]]> and <![CDATA[ reference <= #{endTime,jdbcType=DATE}  ]]>
+  </select>
 </mapper>

@@ -23,5 +23,5 @@ public interface FileService {
 	 * 所有文件
 	 * @return
 	 */
-	public abstract List<UserFile> listFile();
+	public abstract List<UserFile> listFile(int deptId);
 }

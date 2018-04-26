@@ -11,9 +11,11 @@
     <result column="deptId" property="deptId" jdbcType="INTEGER" />
     <result column="examResult" property="examResult" jdbcType="VARCHAR" />
     <result column="examTime" property="examTime" jdbcType="TIMESTAMP" />
+    <result column="leaveTime" property="leaveTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, userId, startTime, endTime, reason, examination, deptId, examResult, examTime
+    id, userId, startTime, endTime, reason, examination, deptId, examResult, examTime, 
+    leaveTime
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -28,12 +30,12 @@
   <insert id="insert" parameterType="lee.attendance.domain.Leave" >
     insert into leave (id, userId, startTime, 
       endTime, reason, examination, 
-      deptId, examResult, examTime
-      )
+      deptId, examResult, examTime, 
+      leaveTime)
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{startTime,jdbcType=TIMESTAMP}, 
       #{endTime,jdbcType=TIMESTAMP}, #{reason,jdbcType=VARCHAR}, #{examination,jdbcType=BIT}, 
-      #{deptId,jdbcType=INTEGER}, #{examResult,jdbcType=VARCHAR}, #{examTime,jdbcType=TIMESTAMP}
-      )
+      #{deptId,jdbcType=INTEGER}, #{examResult,jdbcType=VARCHAR}, #{examTime,jdbcType=TIMESTAMP}, 
+      #{leaveTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="lee.attendance.domain.Leave" >
     insert into `leave`
@@ -65,6 +67,9 @@
       <if test="examTime != null" >
         examTime,
       </if>
+      <if test="leaveTime != null" >
+        leaveTime,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -94,10 +99,13 @@
       <if test="examTime != null" >
         #{examTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="leaveTime != null" >
+        #{leaveTime,jdbcType=TIMESTAMP},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="lee.attendance.domain.Leave" >
-    update `leave`
+    update leave
     <set >
       <if test="userId != null" >
         userId = #{userId,jdbcType=INTEGER},
@@ -123,6 +131,9 @@
       <if test="examTime != null" >
         examTime = #{examTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="leaveTime != null" >
+        leaveTime = #{leaveTime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -135,7 +146,28 @@
       examination = #{examination,jdbcType=BIT},
       deptId = #{deptId,jdbcType=INTEGER},
       examResult = #{examResult,jdbcType=VARCHAR},
-      examTime = #{examTime,jdbcType=TIMESTAMP}
+      examTime = #{examTime,jdbcType=TIMESTAMP},
+      leaveTime = #{leaveTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="findAllLeave" resultType="Leave">
+  	select * from `leave` where userId = #{userId,jdbcType=INTEGER} and   <![CDATA[ leaveTime >= #{startTime,jdbcType=DATE}  ]]> and <![CDATA[ leaveTime <= #{endTime,jdbcType=DATE}  ]]>
+  </select>
+  <!-- 根据部门id查询部门请假-->
+  <select id="findLeaveByDept" resultType="MemberLeave">
+  	SELECT
+`leave`.*, user_info.real_name AS userName
+FROM
+	`leave` 
+LEFT JOIN user_info ON leave.userId = user_info.id
+WHERE
+	deptId = #{deptId, jdbcType=INTEGER} and examResult="未审核" limit #{pageNumber, jdbcType=INTEGER}, #{pageSize, jdbcType=INTEGER}
+  </select>
+  <select id="findCountLeave" resultType="java.lang.Integer">
+  	select count(*) from `leave` where deptId = #{deptId, jdbcType=INTEGER} and examResult="未审核"
+  </select>
+  <!-- 审核员工请假 -->
+  <update id="checkLeave" >
+  	update `leave` set examResult =#{re,jdbcType=VARCHAR}, examination=1 where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

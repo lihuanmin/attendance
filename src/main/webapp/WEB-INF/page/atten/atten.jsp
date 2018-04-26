@@ -10,30 +10,10 @@
 <script type="text/javascript" src="/attendance/static/js/commons/common.js"></script>
 <script type="text/javascript" src="/attendance/static/js/commons/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="/attendance/static/js/layer-v3.1.1/layer/layer.js"></script>
-<script type="text/javascript" src="/attendance/static/js/dict/pinyin_dict_notone.js"></script>
-<script type="text/javascript" src="/attendance/static/js/dict/pinyin_dict_withtone.js"></script>
-<script type="text/javascript" src="/attendance/static/js/dict/pinyinUtil.js"></script>
 <script type="text/javascript" src="/attendance/static/js/dict/simple-input-method.js"></script>
+<script type="text/javascript" src="/attendance/static/js/time/laydate.js"></script>
 <link rel="stylesheet" type="text/css" href="/attendance/static/js/layer-v3.1.1/layer/mobile/need/layer.css">
 <link href="/attendance/static/css/common.css" rel="stylesheet" type="text/css" />
-<style type="text/css">  
-        .search  
-        {  
-            left: 0;  
-            position: relative;  
-        }  
-        #auto_div  
-        {  
-            display: none;  
-            width: 300px;  
-            border: 1px #74c0f9 solid;  
-            background: #FFF;  
-            position: absolute;  
-            top: 24px;  
-            left: 0;  
-            color: #323232;  
-        }  
-    </style>  
 <title>个人中心</title>
 </head>
 <body>
@@ -67,95 +47,178 @@
 		</ul>
 	</div>
 	<div class="content">
-		<form name="date">  
-		  <select name="year" onchange="selectYear(this.value)">  
-		    <option value="">选择 年</option>  
-		  </select>  
-		  <select name="month" onchange="selectMonth(this.value)">  
-		    <option value="">选择 月</option>  
-		  </select>  
-		  <select name="day">  
-		    <option value="">选择 日</option>  
-		  </select>  
-		</form>  
+	<div class="box">
+			<div class="demo2">
+			<form>
+				<input placeholder="开始日期" id="startTime" name="startTime" class="laydate-icon" onClick="laydate({istime: true, format: 'YYYY-MM-DD'})">
+				<input placeholder="结束日期" id="endTime" name="endTime" class="laydate-icon" onClick="laydate({istime: true, format: 'YYYY-MM-DD'})">
+				<input id = "queryButton" class="btn btn-primary" type="button" value="查询">
+			</form>
+			</div>
+		</div>
+		<table class="table table-bordered" id='tableResult'>
+    	<caption>查询用户结果</caption>
+	    <thead>
+	        <tr>
+	            <th>序号</th>
+	            <th>上午考勤</th>
+	            <th>上午状态</th>
+	            <th>下午考勤</th>
+	            <th>下午状态</th>
+	            <th>考勤日期</th>
+	        </tr>
+	    </thead>
+	    <tbody id="tableBody"></tbody>
+</table>
+<table width="60%" align="right">
+        <tr><td><div id="barcon" name="barcon"></div></td></tr>
+</table>
 	</div>
 </body>
-<script language="JavaScript">    
-   function dateStart()     
-   {     
-       //月份对应天数  
-       MonHead = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];     
-      
-       //给年下拉框赋内容     
-       var y  = new Date().getFullYear();     
-       for (var i = (y-50); i < (y+50); i++) //以今年为准，前50年，后50年     
-           document.date.year.options.add(new Option(" "+ i +" 年", i));     
-      
-       //给月下拉框赋内容     
-       for (var i = 1; i < 13; i++)     
-           document.date.month.options.add(new Option(" " + i + " 月", i));  
-     
-       document.date.year.value = y;     
-       document.date.month.value = new Date().getMonth() + 1;     
-       var n = MonHead[new Date().getMonth()];     
-       if (  new Date().getMonth() ==1 && IsPinYear(yearvalue)  )   
-           n++;     
-       writeDay(n); //赋日期下拉框     
-       document.date.day.value = new Date().getDate();     
-   }   
+<script language="JavaScript">
+var PAGESIZE = 10;
+ //获取当前项目的路径
+function  parjsoneval (result) {
+  return eval('(' + result + ')');
+};        
+function goPage(startTime, endTime, pageNumber, pageSize){
+  var url =  getUrl("atten/listAtten"); 
+  startTime = $("#startTime").val();
+  endTime = $("#endTime").val();
+  if(startTime.length===0){
+	  startTime = null;
+  }
+  if(endTime.length===0) {
+	  endTime = null;
+  }
+  var reqParams = {'startTime':startTime, 'endTime':endTime, 'pageNumber':(pageNumber-1)*10,'pageSize':pageSize};
+  $(function () {
+         $.ajax({
+          type:"POST",
+          url:url,
+          data:reqParams,
+          async:false,
+          dataType:"json",
+          success: function(data){
+           console.log(data);
+       		 var datas = JSON.parse(data);
+            //总记录数
+            var totalRecord = datas.totalRecord;
+            //总页数
+            var totalPage = 0;
+            if(totalRecord/pageSize > parseInt(totalRecord/pageSize)) {
+                 totalPage = parseInt(totalRecord/pageSize)+1;
+            } else {
+                totalPage = parseInt(totalRecord/pageSize);
+            }
+            var currentPage = pageNumber;
+            //数据集合
+            var dataList = datas.dataList;
+            console.log(dataList);
+             $("#tableBody").empty();//清空表格
+             if (dataList.length > 0 ) {
+             $(dataList).each(function(){//重新生成
+                $("#tableBody").append('<tr>');
+                $("#tableBody").append('<td>' + this.id + '</td>');
+                $("#tableBody").append('<td>' + timeParse(this.workTime) + '</td>');
+                $("#tableBody").append('<td>' + getStatus(this.amStatus) + '</td>');
+                $("#tableBody").append('<td>' + timeParse(this.endTime) +'</td>');
+                $("#tableBody").append('<td>' + getStatus(this.pmStatus) + '</td>');
+                $("#tableBody").append('<td>' + timeParse2(this.reference) + '</td>');
+                $("#tableBody").append('</tr>');
+                });  
+            } else {                                
+                $("#tableBody").append('<tr><th colspan ="4"><center>查询无数据</center></th></tr>');
+            }
+            var tempStr = "总共"+datas.totalRecord+"条记录|总共"+totalPage+"页|当前第"+currentPage+"页";
+           
+           
+            if(currentPage>1){
+                pageNumber=1;
+                tempStr += "<a href=\"#\" onClick=\"goPage("+startTime+","+endTime+","+pageNumber+","+pageSize+")\">首页</a>";
+                pageNumber = currentPage-1;
+                tempStr += "<a href=\"#\" onClick=\"goPage("+startTime+","+endTime+","+pageNumber+","+pageSize+")\"><上一页</a>"
+             }else{
+                tempStr += "首页";
+                tempStr += "<上一页";    
+             }
+             if(currentPage<totalPage){
+                pageNumber = currentPage+1;
+                tempStr += "<a href=\"#\" onClick=\"goPage("+startTime+","+endTime+","+pageNumber+","+pageSize+")\">下一页></a>";
+                pageNumber = totalPage
+                tempStr += "<a href=\"#\" onClick=\"goPage("+startTime+","+endTime+","+pageNumber+","+pageSize+")\">尾页</a>";
+            }else{
+                tempStr += "下一页>";
+                tempStr += "尾页";    
+            }
+                    document.getElementById("barcon").innerHTML = tempStr;
+          },
+          error: function(e){
+          console.log("查询失败");
+        }
+         });
+  });
     
-   if(document.attachEvent)     
-       window.attachEvent("onload", dateStart);     
-   else     
-       window.addEventListener('load', dateStart, false);     
-  
-   function selectYear(str) //年发生变化时日期发生变化(主要是判断闰平年)     
-   {     
-       var monthvalue = document.date.month.options[document.date.month.selectedIndex].value;     
-       if (monthvalue == "")  
-       {  
-           var e = document.date.day;  
-           optionsClear(e);  
-           return;  
-       }     
-       var n = MonHead[monthvalue - 1];     
-       if (  monthvalue ==2 && IsPinYear(str)  )   
-           n++;     
-       writeDay(n);     
-   }     
-  
-   function selectMonth(str)   //月发生变化时日期联动     
-   {     
-        var yearvalue = document.date.year.options[document.date.year.selectedIndex].value;     
-        if (yearvalue == "")  
-        {   
-            var e = document.date.day;   
-            optionsClear(e);  
-            return;  
-        }     
-        var n = MonHead[str - 1];     
-        if (  str ==2 && IsPinYear(yearvalue)  )   
-            n++;     
-            writeDay(n);    
-        }     
-  
-   function writeDay(n)   //据条件写日期的下拉框     
-   {     
-       var e = document.date.day; optionsClear(e);  
-       e.options.add(new Option("null"));
-       for (var i=1; i<(n+1); i++)     
-           e.options.add(new Option(" "+ i + " 日", i));   
-       
-   }     
-  
-   function IsPinYear(year)//判断是否闰平年     
-   {       
-       return(  0 == year%4 && ( year%100 !=0 || year%400 == 0 )  );  
-   }  
-  
-   function optionsClear(e)   
-   {   
-       e.options.length = 1;   
-   }  
-</script>  
+}
+$(function() {
+    goPage("", "",1,PAGESIZE);
+    $("#queryButton").bind("click",function(){
+    var realName = $("#startTime").val();   
+    var dept = $("endTime").val();
+    goPage(realName,dept,0,PAGESIZE);
+    });
+});
+function timeParse(time) {
+	var timestamp4 = new Date(time);//直接用 new Date(时间戳) 格式转化获得当前时间
+	return timestamp4.toLocaleDateString().replace(/\//g, "-") + " " + timestamp4.toTimeString().substr(0, 8); 
+}
+function timeParse2(time) {
+    var da = new Date(time);
+    var year = da.getFullYear();
+    var month = da.getMonth()+1;
+    var date = da.getDate();
+	return year+"-"+month+"-"+date;
+}
+function getStatus(status) {
+	if(status===0) {
+		return "旷工";
+	}else if(status === 1){
+		return "迟到";
+	}else {
+		return "签到成功";
+	}
+}
+</script>
+
+
+<script type="text/javascript">
+!function(){
+	laydate.skin('molv');//切换皮肤，请查看skins下面皮肤库
+	laydate({elem: '#demo'});//绑定元素
+}();
+//日期范围限制
+var start = {
+    elem: '#start',
+    format: 'YYYY-MM-DD',
+    min: laydate.now(), //设定最小日期为当前日期
+    max: '2099-06-16', //最大日期
+    istime: true,
+    istoday: false,
+    choose: function(datas){
+         end.min = datas; //开始日选好后，重置结束日的最小日期
+         end.start = datas //将结束日的初始值设定为开始日
+    }
+};
+var end = {
+    elem: '#end',
+    format: 'YYYY-MM-DD',
+    min: laydate.now(),
+    max: '2099-06-16',
+    istime: true,
+    istoday: false,
+    choose: function(datas){
+        start.max = datas; //结束日选好后，充值开始日的最大日期
+    }
+};
+</script>
 </html>

@@ -11,7 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSON;
+
+import lee.attendance.commons.LoginRequired;
 import lee.attendance.commons.ResultMsg;
+import lee.attendance.commons.page.PageResponse;
 import lee.attendance.domain.Attendance;
 import lee.attendance.domain.Menu;
 import lee.attendance.domain.UserInfo;
@@ -20,6 +24,7 @@ import lee.attendance.service.HomeService;
 
 @Controller
 @RequestMapping("atten")
+@LoginRequired
 public class AttendanceController {
 	@Autowired
 	private HomeService homeService;
@@ -41,7 +46,20 @@ public class AttendanceController {
 		List<Menu> menuList = homeService.selectMenuByUserId(userId);
 		model.addAttribute("userInfo", userInfo);
 		model.addAttribute("menuList", menuList);
-		List<Attendance> list = attendanceService.queryAtten("", "", "");
 		return "atten/atten";
+	}
+	@RequestMapping("listAtten")
+	@ResponseBody
+	public String listAtten(
+			@RequestParam("startTime")String startTime, 
+			@RequestParam("endTime")String endTime,
+			@RequestParam("pageNumber")int pageNumber, 
+			@RequestParam("pageSize")int pageSize,
+			HttpServletRequest req) {
+		int userId = (int)req.getSession().getAttribute("userId");
+		System.out.println(startTime);
+		System.out.println(endTime);
+		PageResponse<Attendance> pr = attendanceService.queryAtten(startTime, endTime, userId, pageNumber, pageSize);
+		return JSON.toJSONString(pr);
 	}
 }

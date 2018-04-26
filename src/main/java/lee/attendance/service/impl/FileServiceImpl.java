@@ -31,8 +31,8 @@ public class FileServiceImpl implements FileService{
 	}
 
 	@Override
-	public List<UserFile> listFile() {
-		return deptFileMapper.findAllFile();
+	public List<UserFile> listFile(int deptId) {
+		return deptFileMapper.findAllFile(deptId);
 	}
 
 }

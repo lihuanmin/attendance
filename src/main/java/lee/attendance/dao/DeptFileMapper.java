@@ -2,6 +2,8 @@ package lee.attendance.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import lee.attendance.domain.DeptFile;
 import lee.attendance.domain.transfer.UserFile;
 
@@ -21,5 +23,5 @@ public interface DeptFileMapper {
      * 查询出所有的文件
      * @return
      */
-    List<UserFile> findAllFile();
+    List<UserFile> findAllFile(@Param("deptId")int deptId);
 }

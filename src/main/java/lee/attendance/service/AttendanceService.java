@@ -3,6 +3,7 @@ package lee.attendance.service;
 import java.util.List;
 
 import lee.attendance.commons.ResultMsg;
+import lee.attendance.commons.page.PageResponse;
 import lee.attendance.domain.Attendance;
 
 public interface AttendanceService {
@@ -19,10 +20,8 @@ public interface AttendanceService {
 	public abstract ResultMsg atten(int userId);
 	/**
 	 * 查询当月的考勤
-	 * @param year
-	 * @param month
-	 * @param day
+	 * @param userId
 	 * @return
 	 */
-	public abstract List<Attendance> queryAtten(String year, String month, String day);
+	public abstract PageResponse<Attendance> queryAtten(String startTime, String endTime, int userId, int pageNumber, int pageSize);
 }

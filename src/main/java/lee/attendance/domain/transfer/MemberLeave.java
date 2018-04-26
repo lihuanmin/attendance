@@ -1,9 +1,9 @@
-package lee.attendance.domain;
+package lee.attendance.domain.transfer;
 
 import java.util.Date;
 
-public class Leave {
-    private Integer id;
+public class MemberLeave {
+	private Integer id;
 
     private Integer userId;
 
@@ -22,8 +22,18 @@ public class Leave {
     private Date examTime;
 
     private Date leaveTime;
+    
+    private String userName;
+    
+    public String getUserName() {
+		return userName;
+	}
 
-    public Integer getId() {
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public Integer getId() {
         return id;
     }
 

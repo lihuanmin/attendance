@@ -88,7 +88,7 @@ public class FileController {
 		model.addAttribute("userInfo", userInfo);
 		model.addAttribute("menuList", menuList);
 		
-		List<UserFile> list = fileService.listFile();
+		List<UserFile> list = fileService.listFile(fileService.findDeptIdByUserId(userId));
 		for(UserFile uf : list) {
 			String url = uf.getFileUrl();
 			uf.setFileName(url.substring(url.lastIndexOf("\\")+1, url.lastIndexOf("-"))+url.substring(url.lastIndexOf(".")));
