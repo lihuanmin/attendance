@@ -74,7 +74,7 @@ function  parjsoneval (result) {
   return eval('(' + result + ')');
 };        
 function goPage(pageNumber, pageSize){
-  var url =  getUrl("leave/memleave"); 
+  var url =  getUrl("deptMember/memleave"); 
   var reqParams = {'pageNumber':(pageNumber-1)*10,'pageSize':pageSize};
   $(function () {
          $.ajax({
@@ -161,19 +161,19 @@ function timeParse2(time) {
 function check1(id) {
 	alert(id);
 	$.ajax({
-		url:getUrl("leave/check"),
-		data:{"id":id, "re":"同意"},
+		url:getUrl("deptMember/check"),
+		data:{"id":id, "re":2},
 		success:function(data) {
 			if(data.success)
-				windows.location.href=getUrl("leave/memleave");
+				windows.location.href=getUrl("deptMember/memleave");
 		}
 	});
 }
 function check2(id) {
 	alert(id);
 	$.ajax({
-		url:getUrl("leave/check"),
-		data:{"id":id, "re":"不同意"},
+		url:getUrl("deptMember/check"),
+		data:{"id":id, "re":1},
 		success:function(data) {
 			if(data.success)
 				windows.location.href=getUrl("leave/memleave");

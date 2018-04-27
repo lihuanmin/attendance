@@ -60,7 +60,7 @@
             <th>电话</th>
             <th>角色名</th>
             <th>部门名</th>
-            <th colspan="2">操作</th>
+            <th>操作</th>
         </tr>
     </thead>
     <tbody id="tableBody">
@@ -125,8 +125,7 @@ function goPage(realName, dept, pageNumber, pageSize){
                 $("#tableBody").append('<td>' + this.phone+ '</td>');
                 $("#tableBody").append('<td>' + this.roleName + '</td>');
                 $("#tableBody").append('<td>' + this.deptName + '</td>');
-                $("#tableBody").append('<td><a href="#">删除</a> </td>');
-                $("#tableBody").append('<td><a href="#">修改 </a></td>');
+                $("#tableBody").append('<td><button onclick="del('+this.id+')">删除</button> </td>');
                 $("#tableBody").append('</tr>');
                 });  
             } else {                                
@@ -165,7 +164,7 @@ $(function() {
     $("#queryButton").bind("click",function(){
     var realName = $("#textInput").val();   
     var dept = $("textInput2").val();
-    goPage(realName,dept,0,PAGESIZE);
+    goPage(realName,dept,1,PAGESIZE);
     });
 });
 function  getSex(sex) {
@@ -174,9 +173,15 @@ function  getSex(sex) {
 	else
 		return '女';
 }
-function timeParse(time) {
-	var timestamp4 = new Date(1472048779952);//直接用 new Date(时间戳) 格式转化获得当前时间
-	return timestamp4.toLocaleDateString().replace(/\//g, "-") + " " + timestamp4.toTimeString().substr(0, 8); 
+function del(userId) {
+	$.ajax({
+		url:getUrl("member/delUser"),
+		data:{"userId":userId},
+		success:function(data) {
+			if(data.success)
+				windows.location.href=getUrl("member/memberListPage");
+		}
+	});
 }
 </script>
 </html>

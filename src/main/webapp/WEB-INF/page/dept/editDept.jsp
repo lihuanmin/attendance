@@ -73,9 +73,9 @@
 			<input type="text" id="deptCode" name="deptCode" value="${dept.deptCode}"/><br/>
 			<div class="search">  
         		<input type="text" id="head" name="head" value="${dept.head}"/><br/>
-        	<div id="auto_div">  
-        	</div>  
-    </div>  
+	        	<div id="auto_div">  
+	        	</div>  
+    		</div>  
 			
 			<input type="text" id="slogan" name="slogan" value="${dept.slogan}"/><br/>
 			<input type="button" onclick="update()" value="修改"/>

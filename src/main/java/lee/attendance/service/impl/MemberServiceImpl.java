@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 
 import lee.attendance.commons.ResultMsg;
 import lee.attendance.commons.page.PageResponse;
+import lee.attendance.dao.AttendanceMapper;
 import lee.attendance.dao.DepartmentMapper;
+import lee.attendance.dao.UserLeaveMapper;
 import lee.attendance.dao.RoleMapper;
 import lee.attendance.dao.UserDeptMapper;
 import lee.attendance.dao.UserInfoMapper;
@@ -40,6 +42,12 @@ public class MemberServiceImpl implements MemberService{
 	private RoleMapper roleMapper;
 	@Autowired
 	private UserRoleMapper userRoleMapper;
+	@Autowired
+	private AttendanceMapper attendanceMapper;
+	
+	@Autowired
+	private UserLeaveMapper leaveMapper;
+	
 	@Override
 	public ResultMsg addMember(User user) {
 		
@@ -111,5 +119,15 @@ public class MemberServiceImpl implements MemberService{
 		pr.setDataList(list);
 		pr.setTotalRecord(memberCount);
 		return pr;
+	}
+	@Override
+	public ResultMsg delUser(int userId) {
+		UserInfo userInfo = userInfoMapper.selectById(userId);
+		userInfoMapper.deleteByPrimaryKey(userId);
+		userVerificationMapper.deleteByPrimaryKey(userId);
+		attendanceMapper.delAttendance(userId);
+		leaveMapper.delLeave(userId);
+		departmentMapper.updateHead(userInfo.getRealName());
+		return new ResultMsg(Boolean.TRUE, "删除成功");
 	}
 }

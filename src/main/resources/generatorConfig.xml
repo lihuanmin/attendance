@@ -26,7 +26,7 @@
  			<property name="enableSubPackages" value="false"/>
  		</javaClientGenerator>
  		<!-- 表 -->
-        <table tableName="leave" domainObjectName="Leave" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+        <table tableName="user_leave" domainObjectName="UserLeave" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
         	<property name="useActualColumnNames" value="true"/>
         </table>
     </context>  

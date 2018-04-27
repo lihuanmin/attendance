@@ -1,5 +1,7 @@
 package lee.attendance.dao;
 
+import org.apache.ibatis.annotations.Param;
+
 import lee.attendance.domain.UserRole;
 
 public interface UserRoleMapper {
@@ -20,4 +22,16 @@ public interface UserRoleMapper {
      * @return
      */
     int updateByUserId(UserRole userRole);
+    /**
+     * 根据用户id根据用户角色
+     * @param userId
+     * @return
+     */
+    int updateRoleByUserId(@Param("userId")int userId);
+    /**
+     * 删除用户角色
+     * @param userId
+     * @return
+     */
+    int delUserRole(@Param("userId")int userId);
 }

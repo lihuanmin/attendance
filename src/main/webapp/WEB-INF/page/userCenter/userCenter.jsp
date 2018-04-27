@@ -48,8 +48,8 @@
 			<input type="text" id="realName" name="realName" disabled="true"/><br/>
 			<input type="text" id="registerTime" name="registerTIme" disabled="true"/><br/>
 			<select name="sex" id="sex"></select><br/>
-			<input type="text" id="email" name="email"/><br/>
-			<input type="text" id="phone" name="phone"/><br/>
+			<input type="text" id="email" name="email" placeholder="email"/><br/>
+			<input type="text" id="phone" name="phone" placeholder="phone"/><br/>
 			<textarea name="introduce" id="introduce" rows="5" cols="10">
 			</textarea><br/>
 			<input type="button" onclick="updateUserInfo()" value="修改"/>

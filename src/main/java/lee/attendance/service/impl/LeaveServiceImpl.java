@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 
 import lee.attendance.commons.ResultMsg;
 import lee.attendance.commons.page.PageResponse;
-import lee.attendance.dao.LeaveMapper;
+import lee.attendance.dao.UserLeaveMapper;
 import lee.attendance.dao.UserDeptMapper;
-import lee.attendance.domain.Leave;
+import lee.attendance.domain.UserLeave;
 import lee.attendance.domain.transfer.MemberLeave;
 import lee.attendance.service.LeaveService;
 
@@ -21,72 +21,74 @@ public class LeaveServiceImpl implements LeaveService{
 	@Autowired
 	private UserDeptMapper userDeptMapper;
 	@Autowired
-	private LeaveMapper leaveMapper;
+	private UserLeaveMapper leaveMapper;
 	@Override
 	public ResultMsg leave(int userId, String start, String end, String reason)  {
 		//用户部门
 		int deptId = userDeptMapper.findDeptIdByUserId(userId);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		try {
-			Leave leave = new Leave();
+			UserLeave leave = new UserLeave();
 			leave.setDeptId(deptId);
 			leave.setStartTime(sdf.parse(start));
 			leave.setEndTime(sdf.parse(end));
 			leave.setReason(reason);
 			leave.setUserId(userId);
 			leave.setLeaveTime(new Date());
-			leave.setExamResult("未审核");
 			leaveMapper.insertSelective(leave);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		
 		return new ResultMsg(Boolean.TRUE, "请假成功");
 	}
 	@Override
-	public List<Leave> listLeave(int userId) {
-		return leaveMapper.findAllLeave(getfirstDay(), getLastDay(), userId);
-	}
-	private Date getfirstDay() {
-		Date date = new Date();
+	public PageResponse<UserLeave> listLeave(int userId, int pageNumber, int pageSize, String startTime, String endTime) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		String now = sdf.format(date);
-		now = now.substring(0, now.lastIndexOf("-"));
-		try {
-			Date d = sdf.parse(now+"-01");
-			return d;
-		} catch (ParseException e) {
-			return null;
+		/*
+		 * 当日期范围为空时，则其实日期为月初
+		 */
+		if((startTime == null||"".equals(startTime))&&(endTime == null || "".equals(endTime))) {
+			startTime = getfirstDay();
+			endTime = getLastDay();
+		}else if(startTime == null||"".equals(startTime)) {
+			startTime = getfirstDay();
+		} else if(endTime == null || "".equals(endTime)){
+			endTime = getLastDay();
 		}
-		
-	}
-	private Date getLastDay() {
-		Date date = new Date();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		String now = sdf.format(date);
-		now = now.substring(0, now.lastIndexOf("-"));
+		/*
+		 * 查询日期范围内的数量
+		 */
+		int leaveCount = 0;
 		try {
-			Date d = sdf.parse(now+"-31");
-			return d;
+			leaveCount = leaveMapper.findLeaveCount(userId, sdf.parse(startTime), sdf.parse(endTime));
 		} catch (ParseException e) {
-			return null;
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-	}
-	@Override
-	public PageResponse<MemberLeave> memberLeave(int userId, int pageNumber, int pageSize) {
-		int deptId = userDeptMapper.findDeptIdByUserId(userId);
-		List<MemberLeave> memLeaveList = leaveMapper.findLeaveByDept(deptId, pageSize, pageNumber);
-		int size = leaveMapper.findCountLeave(deptId);
-		PageResponse<MemberLeave> pr = new PageResponse<MemberLeave>();
-		pr.setTotalRecord(size);
-		pr.setDataList(memLeaveList);
+		List<UserLeave> list = null;
+		try {
+			list = leaveMapper.findAllLeave(sdf.parse(startTime), sdf.parse(endTime), userId);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		PageResponse<UserLeave> pr = new PageResponse<UserLeave>();
+		pr.setTotalRecord(leaveCount);
+		pr.setDataList(list);
 		return pr;
 	}
-	@Override
-	public ResultMsg check(int id, String re) {
-		int r = leaveMapper.checkLeave(id, re);
-		if(r<=0)
-			return new ResultMsg(Boolean.FALSE, "审核失败");
-		return new ResultMsg(Boolean.TRUE, "审核成功");
+	private String getfirstDay() {
+		Date date = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String now = sdf.format(date);
+		now = now.substring(0, now.lastIndexOf("-"))+"-01";
+		return now;
+	}
+	private String getLastDay() {
+		Date date = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String now = sdf.format(date);
+		now = now.substring(0, now.lastIndexOf("-"))+"-31";
+		return now;
 	}
 }

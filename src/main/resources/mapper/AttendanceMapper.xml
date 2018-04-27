@@ -133,4 +133,7 @@
   <select id="findAttenCount" resultType="java.lang.Integer">
   	select count(*) from attendance where userId = #{userId,jdbcType=INTEGER} and  <![CDATA[ reference >= #{startTime,jdbcType=DATE}  ]]> and <![CDATA[ reference <= #{endTime,jdbcType=DATE}  ]]>
   </select>
+  <delete id="delAttendance" parameterType="java.lang.Integer">
+  	delete from attendance where userId = #{userId,jdbcType=INTEGER}
+  </delete>
 </mapper>

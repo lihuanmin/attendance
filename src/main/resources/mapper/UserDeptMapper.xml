@@ -72,4 +72,7 @@
   <select id="findDeptIdByUserId"  resultType="java.lang.Integer">
   	select deptId from user_dept where userId = #{userId,jdbcType=INTEGER}
   </select>
+  <delete id="delUserDept" parameterType="java.lang.Integer">
+  	delete from user_dept where userId = #{userId,jdbcType=INTEGER}
+  </delete>
 </mapper>

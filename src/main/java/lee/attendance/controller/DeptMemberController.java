@@ -16,29 +16,28 @@ import com.alibaba.fastjson.JSON;
 import lee.attendance.commons.LoginRequired;
 import lee.attendance.commons.ResultMsg;
 import lee.attendance.commons.page.PageResponse;
-import lee.attendance.domain.Attendance;
 import lee.attendance.domain.Menu;
 import lee.attendance.domain.UserInfo;
-import lee.attendance.service.AttendanceService;
+import lee.attendance.domain.transfer.MemberLeave;
+import lee.attendance.service.DeptMemberService;
 import lee.attendance.service.HomeService;
 
 @Controller
-@RequestMapping("atten")
+@RequestMapping("deptMember")
 @LoginRequired
-public class AttendanceController {
+public class DeptMemberController {
 	@Autowired
 	private HomeService homeService;
 	@Autowired
-	private AttendanceService attendanceService;
-	@RequestMapping("atten")
-	@ResponseBody
-	public ResultMsg atten(HttpServletRequest req) {
-		int userId = (int)req.getSession().getAttribute("userId");
-		ResultMsg msg = attendanceService.atten(userId);
-		return msg;
-	}
-	@RequestMapping("attenPage")
-	public String attenPage(HttpServletRequest req, Model model){
+	private DeptMemberService deptMemberService;
+	/**
+	 * 员工请假页面
+	 * @param req
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping("memberLeave")
+	public String memberLeave(HttpServletRequest req, Model model) {
 		int userId = (int)req.getSession().getAttribute("userId");
 		//用户基本信息
 		UserInfo userInfo = homeService.selectUserById(userId);
@@ -46,18 +45,28 @@ public class AttendanceController {
 		List<Menu> menuList = homeService.selectMenuByUserId(userId);
 		model.addAttribute("userInfo", userInfo);
 		model.addAttribute("menuList", menuList);
-		return "atten/atten";
+		return "deptmem/deptMember";
 	}
-	@RequestMapping("listAtten")
+	/**
+	 * 查看部门员工请假
+	 * @param req
+	 * @param pageNumber
+	 * @param pageSize
+	 * @return
+	 */
+	@RequestMapping("memleave")
 	@ResponseBody
-	public String listAtten(
-			@RequestParam("startTime")String startTime, 
-			@RequestParam("endTime")String endTime,
+	public String memleave(
+			HttpServletRequest req,
 			@RequestParam("pageNumber")int pageNumber, 
-			@RequestParam("pageSize")int pageSize,
-			HttpServletRequest req) {
+			@RequestParam("pageSize")int pageSize){
 		int userId = (int)req.getSession().getAttribute("userId");
-		PageResponse<Attendance> pr = attendanceService.queryAtten(startTime, endTime, userId, pageNumber, pageSize);
-		return JSON.toJSONString(pr);
+		PageResponse<MemberLeave> list = deptMemberService.memberLeave(userId, pageNumber, pageSize);
+		return JSON.toJSONString(list);
+	}
+	@RequestMapping("check")
+	@ResponseBody
+	public ResultMsg check(@RequestParam("id")int id, @RequestParam("re")int re) {
+		return deptMemberService.check(id, re);
 	}
 }

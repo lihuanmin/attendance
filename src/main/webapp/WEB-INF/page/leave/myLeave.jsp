@@ -10,58 +10,11 @@
 <script type="text/javascript" src="/attendance/static/js/commons/common.js"></script>
 <script type="text/javascript" src="/attendance/static/js/commons/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="/attendance/static/js/layer-v3.1.1/layer/layer.js"></script>
-<script type="text/javascript" src="/attendance/static/js/dict/pinyin_dict_notone.js"></script>
-<script type="text/javascript" src="/attendance/static/js/dict/pinyin_dict_withtone.js"></script>
-<script type="text/javascript" src="/attendance/static/js/dict/pinyinUtil.js"></script>
 <script type="text/javascript" src="/attendance/static/js/dict/simple-input-method.js"></script>
 <script type="text/javascript" src="/attendance/static/js/time/laydate.js"></script>
-<link rel="stylesheet" type="text/css" href="/attendance/static/js/layer-v3.1.1/layer/mobile/need/layer.css">
+<link rel="stylesheet" type="text/css" href="/attendance/static/js/layer-v3.1.1/layer/mobile/need/layer.css"/>
 <link href="/attendance/static/css/common.css" rel="stylesheet" type="text/css" />
 
-<style type="text/css">
-* {
-	margin: 0;
-	padding: 0;
-	list-style: none;
-}
-html {
-	background-color: #E3E3E3;
-	font-size: 14px;
-	color: #000;
-	font-family: '微软雅黑'
-}
-h2 {
-	line-height: 30px;
-	font-size: 20px;
-}
-a, a:hover {
-	text-decoration: none;
-}
-pre {
-	font-family: '微软雅黑'
-}
-.box {
-	width: 970px;
-	padding: 10px 20px;
-	background-color: #fff;
-	margin: 10px auto;
-}
-.box a {
-	padding-right: 20px;
-}
-.demo1, .demo2, .demo3, .demo4, .demo5, .demo6 {
-	margin: 25px 0;
-}
-h3 {
-	margin: 10px 0;
-}
-.layinput {
-	height: 22px;
-	line-height: 22px;
-	width: 150px;
-	margin: 0;
-}
-</style>
 <title>个人中心</title>
 </head>
 <body>
@@ -95,32 +48,166 @@ h3 {
 		</ul>
 	</div>
 	<div class="content">
-		<table>
-			<tr>
-				<td>编号</td>
-				<td>请假日期</td>
-				<td>请假开始时间</td>
-				<td>请假结束时间</td>
-				<td>请假原因</td>
-				<td>审批结果</td>
-			</tr>
-		
-		<c:forEach var="dir" items="${listLeave}">
-		<tr>
-			<td>${dir.id}</td>
-			<td><fmt:formatDate value="${dir.leaveTime}" pattern="yyyy/MM/dd HH:mm:ss"/></td>
-			<td><fmt:formatDate value="${dir.startTime}" pattern="yyyy/MM/dd HH:mm:ss"/></td>
-			<td><fmt:formatDate value="${dir.endTime}" pattern="yyyy/MM/dd HH:mm:ss"/></td>
-			<td>${dir.reason}</td>
-			<td>
-			${dir.examResult}
-			</td>
-		</tr>
-		</c:forEach>
-		</table>
+	<div class="box">
+			<div class="demo2">
+			<form>
+				<input placeholder="开始日期" id="startTime" name="startTime" class="laydate-icon" onClick="laydate({istime: true, format: 'YYYY-MM-DD'})">
+				<input placeholder="结束日期" id="endTime" name="endTime" class="laydate-icon" onClick="laydate({istime: true, format: 'YYYY-MM-DD'})">
+				<input id = "queryButton" class="btn btn-primary" type="button" value="查询">
+			</form>
+			</div>
+		</div>
+		<table class="table table-bordered" id='tableResult'>
+	    <thead>
+	        <tr>
+	            <th>序号</th>
+	            <th>请假日期</th>
+	            <th>开始时间</th>
+	            <th>结束时间</th>
+	            <th>请假原因</th>
+	            <th>审核结果</th>
+	        </tr>
+	    </thead>
+	    <tbody id="tableBody"></tbody>
+</table>
+<table width="60%" align="right">
+        <tr><td><div id="barcon" name="barcon"></div></td></tr>
+</table>
 	</div>
 </body>
-<script>
-	
+<script language="JavaScript">
+var PAGESIZE = 10;
+ //获取当前项目的路径
+function  parjsoneval (result) {
+  return eval('(' + result + ')');
+};        
+function goPage(startTime, endTime, pageNumber, pageSize){
+  var url =  getUrl("leave/leaveList"); 
+  startTime = $("#startTime").val();
+  endTime = $("#endTime").val();
+  if(startTime.length===0){
+	  startTime = null;
+  }
+  if(endTime.length===0) {
+	  endTime = null;
+  }
+  var reqParams = {'startTime':startTime, 'endTime':endTime, 'pageNumber':(pageNumber-1)*10,'pageSize':pageSize};
+  $(function () {
+         $.ajax({
+          type:"POST",
+          url:url,
+          data:reqParams,
+          async:false,
+          dataType:"json",
+          success: function(data){
+           console.log(data);
+       		 var datas = JSON.parse(data);
+            //总记录数
+            var totalRecord = datas.totalRecord;
+            //总页数
+            var totalPage = 0;
+            if(totalRecord/pageSize > parseInt(totalRecord/pageSize)) {
+                 totalPage = parseInt(totalRecord/pageSize)+1;
+            } else {
+                totalPage = parseInt(totalRecord/pageSize);
+            }
+            var currentPage = pageNumber;
+            //数据集合
+            var dataList = datas.dataList;
+            console.log(dataList);
+             $("#tableBody").empty();//清空表格
+             if (dataList.length > 0 ) {
+             $(dataList).each(function(){//重新生成
+                $("#tableBody").append('<tr>');
+                $("#tableBody").append('<td>' + this.id + '</td>');
+                $("#tableBody").append('<td>' + timeParse(this.leaveTime) + '</td>');
+                $("#tableBody").append('<td>' + timeParse(this.startTime) + '</td>');
+                $("#tableBody").append('<td>' + timeParse(this.endTime) +'</td>');
+                $("#tableBody").append('<td>' + this.reason + '</td>');
+                $("#tableBody").append('<td>' + checkResult(this.examResult) + '</td>');
+                $("#tableBody").append('</tr>');
+                });  
+            } else {                                
+                $("#tableBody").append('<tr><th colspan ="4"><center>查询无数据</center></th></tr>');
+            }
+            var tempStr = "总共"+datas.totalRecord+"条记录|总共"+totalPage+"页|当前第"+currentPage+"页";
+           
+           
+            if(currentPage>1){
+                pageNumber=1;
+                tempStr += "<a href=\"#\" onClick=\"goPage("+startTime+","+endTime+","+pageNumber+","+pageSize+")\">首页</a>";
+                pageNumber = currentPage-1;
+                tempStr += "<a href=\"#\" onClick=\"goPage("+startTime+","+endTime+","+pageNumber+","+pageSize+")\"><上一页</a>"
+             }else{
+                tempStr += "首页";
+                tempStr += "<上一页";    
+             }
+             if(currentPage<totalPage){
+                pageNumber = currentPage+1;
+                tempStr += "<a href=\"#\" onClick=\"goPage("+startTime+","+endTime+","+pageNumber+","+pageSize+")\">下一页></a>";
+                pageNumber = totalPage
+                tempStr += "<a href=\"#\" onClick=\"goPage("+startTime+","+endTime+","+pageNumber+","+pageSize+")\">尾页</a>";
+            }else{
+                tempStr += "下一页>";
+                tempStr += "尾页";    
+            }
+                    document.getElementById("barcon").innerHTML = tempStr;
+          },
+          error: function(e){
+          console.log("查询失败");
+        }
+         });
+  });
+    
+}
+$(function() {
+    goPage("", "",1,PAGESIZE);
+    $("#queryButton").bind("click",function(){
+    var realName = $("#startTime").val();   
+    var dept = $("endTime").val();
+    goPage(realName,dept,0,PAGESIZE);
+    });
+});
+function checkResult(result) {
+	if(result===0) {
+		return "未审核";
+	}else if(result === 1) {
+		return "未通过";
+	}else {
+		return "通过";
+	}
+}
+</script>
+
+
+<script type="text/javascript">
+!function(){
+	laydate.skin('molv');//切换皮肤，请查看skins下面皮肤库
+	laydate({elem: '#demo'});//绑定元素
+}();
+//日期范围限制
+var start = {
+    elem: '#start',
+    format: 'YYYY-MM-DD',
+    min: laydate.now(), //设定最小日期为当前日期
+    max: '2099-06-16', //最大日期
+    istime: true,
+    istoday: false,
+    choose: function(datas){
+         end.min = datas; //开始日选好后，重置结束日的最小日期
+         end.start = datas //将结束日的初始值设定为开始日
+    }
+};
+var end = {
+    elem: '#end',
+    format: 'YYYY-MM-DD',
+    min: laydate.now(),
+    max: '2099-06-16',
+    istime: true,
+    istoday: false,
+    choose: function(datas){
+        start.max = datas; //结束日选好后，充值开始日的最大日期
+    }
+};
 </script>
 </html>

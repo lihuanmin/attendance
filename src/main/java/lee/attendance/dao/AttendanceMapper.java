@@ -52,4 +52,10 @@ public interface AttendanceMapper {
      * @return
      */
     int findAttenCount(@Param("startTime")Date startTime, @Param("endTime")Date endTime, @Param("userId")int userId);
+    /**
+     * 删除考勤
+     * @param userId
+     * @return
+     */
+    int delAttendance(@Param("userId")int userId);
 }

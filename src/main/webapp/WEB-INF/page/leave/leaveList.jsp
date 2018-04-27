@@ -24,12 +24,6 @@
 	padding: 0;
 	list-style: none;
 }
-html {
-	background-color: #E3E3E3;
-	font-size: 14px;
-	color: #000;
-	font-family: '微软雅黑'
-}
 h2 {
 	line-height: 30px;
 	font-size: 20px;

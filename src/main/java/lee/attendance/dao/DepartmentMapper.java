@@ -64,4 +64,10 @@ public interface DepartmentMapper {
      * @return
      */
     List<String> search(@Param("deptId")int deptId);
+    /**
+     * 更新部门主管
+     * @param userName
+     * @return
+     */
+    int updateHead(@Param("userName")String userName);
 }

@@ -123,4 +123,8 @@
   <select id="search" parameterType="java.lang.Integer" resultType="java.lang.String">
   	select real_name from user_info left join user_dept on user_dept.userId = user_info.id where user_dept.deptId = #{deptId, jdbcType=INTEGER}
   </select>
+  
+  <update id="updateHead" parameterType="java.lang.String">
+  	update department set head="暂无" where head=#{userName, jdbcType=VARCHAR}
+  </update>
 </mapper>

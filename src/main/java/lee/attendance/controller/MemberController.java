@@ -108,6 +108,14 @@ public class MemberController {
 		model.addAttribute("menuList", menuList);
 		return "member/memberList";
 	}
+	/**
+	 * 成员列表
+	 * @param realName
+	 * @param dept
+	 * @param pageNumber
+	 * @param pageSize
+	 * @return
+	 */
 	@RequestMapping("memberList")
 	@ResponseBody
 	public String memberList(
@@ -116,5 +124,15 @@ public class MemberController {
 			@RequestParam("pageNumber")int pageNumber, 
 			@RequestParam("pageSize")int pageSize) {
 		return JSON.toJSONString(memberService.findAllUser(dept, realName, pageNumber, pageSize));
+	}
+	/**
+	 * 删除用户
+	 * @param userId
+	 * @return
+	 */
+	@RequestMapping("delUser")
+	@ResponseBody
+	public ResultMsg delUser(@RequestParam("userId")int userId) {
+		return memberService.delUser(userId);
 	}
 }

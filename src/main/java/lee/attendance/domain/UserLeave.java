@@ -2,7 +2,7 @@ package lee.attendance.domain;
 
 import java.util.Date;
 
-public class Leave {
+public class UserLeave {
     private Integer id;
 
     private Integer userId;
@@ -13,15 +13,15 @@ public class Leave {
 
     private String reason;
 
-    private Boolean examination;
-
     private Integer deptId;
 
-    private String examResult;
+    private Integer examResult;
 
     private Date examTime;
 
     private Date leaveTime;
+
+    private Byte type;
 
     public Integer getId() {
         return id;
@@ -63,14 +63,6 @@ public class Leave {
         this.reason = reason == null ? null : reason.trim();
     }
 
-    public Boolean getExamination() {
-        return examination;
-    }
-
-    public void setExamination(Boolean examination) {
-        this.examination = examination;
-    }
-
     public Integer getDeptId() {
         return deptId;
     }
@@ -79,15 +71,15 @@ public class Leave {
         this.deptId = deptId;
     }
 
-    public String getExamResult() {
-        return examResult;
-    }
+    public Integer getExamResult() {
+		return examResult;
+	}
 
-    public void setExamResult(String examResult) {
-        this.examResult = examResult == null ? null : examResult.trim();
-    }
+	public void setExamResult(Integer examResult) {
+		this.examResult = examResult;
+	}
 
-    public Date getExamTime() {
+	public Date getExamTime() {
         return examTime;
     }
 
@@ -101,5 +93,13 @@ public class Leave {
 
     public void setLeaveTime(Date leaveTime) {
         this.leaveTime = leaveTime;
+    }
+
+    public Byte getType() {
+        return type;
+    }
+
+    public void setType(Byte type) {
+        this.type = type;
     }
 }

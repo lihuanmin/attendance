@@ -22,4 +22,10 @@ public interface UserDeptMapper {
      * @return
      */
     int findDeptIdByUserId(@Param("userId")int userId);
+    /**
+     * 删除用户部门
+     * @param userId
+     * @return
+     */
+    int delUserDept(@Param("userId")int userId);
 }

@@ -57,7 +57,6 @@
 			</div>
 		</div>
 		<table class="table table-bordered" id='tableResult'>
-    	<caption>查询用户结果</caption>
 	    <thead>
 	        <tr>
 	            <th>序号</th>
@@ -168,17 +167,6 @@ $(function() {
     goPage(realName,dept,0,PAGESIZE);
     });
 });
-function timeParse(time) {
-	var timestamp4 = new Date(time);//直接用 new Date(时间戳) 格式转化获得当前时间
-	return timestamp4.toLocaleDateString().replace(/\//g, "-") + " " + timestamp4.toTimeString().substr(0, 8); 
-}
-function timeParse2(time) {
-    var da = new Date(time);
-    var year = da.getFullYear();
-    var month = da.getMonth()+1;
-    var date = da.getDate();
-	return year+"-"+month+"-"+date;
-}
 function getStatus(status) {
 	if(status===0) {
 		return "旷工";
@@ -220,5 +208,6 @@ var end = {
         start.max = datas; //结束日选好后，充值开始日的最大日期
     }
 };
+}
 </script>
 </html>

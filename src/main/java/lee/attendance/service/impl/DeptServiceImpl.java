@@ -80,7 +80,14 @@ public class DeptServiceImpl implements DeptService{
 		if(null!=reNameC&&!"".equals(reNameC))
 			return new ResultMsg(Boolean.FALSE, "编号已经重复，请在原有基础上添加后缀或前缀");
 		
-		
+		/*
+		 *查询部门员主管 
+		 */
+		Department dept = departmentMapper.selectDeptById(department.getDeptId());
+		if(!"暂无".equals(dept.getHead())) {
+			UserInfo userInfo = userInfoMapper.selectByRealName(dept.getHead());
+			userRoleMapper.updateRoleByUserId(userInfo.getId());
+		}
 		
 		
 		if(department.getHead()!="暂无"){
@@ -109,16 +116,6 @@ public class DeptServiceImpl implements DeptService{
 		int result = departmentMapper.updateByPrimaryKeySelective(department);
 		if(result <= 0)
 			return new ResultMsg(Boolean.FALSE, "修改失败");
-		
-		/*
-		 * 将用户假如部门
-		 */
-		/*UserDept userDept = new UserDept();
-		userDept.setDeptId(department.getDeptId());
-		userDept.setUserId(userInfo.getId());
-		int ud = userDetMapper.insertSelective(userDept);
-		if(ud <= 0)
-			return new ResultMsg(Boolean.FALSE, "用户假如部门失败");*/
 		return new ResultMsg(Boolean.TRUE, "修改成功");
 	}
 

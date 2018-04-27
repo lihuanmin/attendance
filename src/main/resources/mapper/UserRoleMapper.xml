@@ -72,4 +72,10 @@
   <update id="updateByUserId" parameterType="UserRole">
   	update user_role set roleId = #{roleId,jdbcType=INTEGER} where userId = #{userId,jdbcType=INTEGER}
   </update>
+  <update id="updateRoleByUserId" parameterType="java.lang.Integer">
+  	update user_role set roleId = 1 where userId = #{userId,jdbcType=INTEGER}
+  </update>
+  <delete id="delUserRole" parameterType="java.lang.Integer">
+  	delete from user_role where userId = #{userId,jdbcType=INTEGER}
+  </delete>
 </mapper>

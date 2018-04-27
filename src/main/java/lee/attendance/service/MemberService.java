@@ -35,5 +35,11 @@ public interface MemberService {
 	 * @return
 	 */
 	public abstract PageResponse<AllUser> findAllUser(String dept, String realName, int pageNumber, int pageSize); 
+	/**
+	 * 根据id删除用户
+	 * @param userId
+	 * @return
+	 */
+	public abstract ResultMsg delUser(int userId);
 	
 }
