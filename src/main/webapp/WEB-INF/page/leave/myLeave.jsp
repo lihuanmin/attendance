@@ -49,14 +49,14 @@
 	</div>
 	<div class="content">
 	<div class="box">
-			<div class="demo2">
+	<div class="demo2">
 			<form>
 				<input placeholder="开始日期" id="startTime" name="startTime" class="laydate-icon" onClick="laydate({istime: true, format: 'YYYY-MM-DD'})">
 				<input placeholder="结束日期" id="endTime" name="endTime" class="laydate-icon" onClick="laydate({istime: true, format: 'YYYY-MM-DD'})">
 				<input id = "queryButton" class="btn btn-primary" type="button" value="查询">
 			</form>
-			</div>
-		</div>
+	</div>
+	</div>
 		<table class="table table-bordered" id='tableResult'>
 	    <thead>
 	        <tr>
@@ -165,7 +165,7 @@ $(function() {
     $("#queryButton").bind("click",function(){
     var realName = $("#startTime").val();   
     var dept = $("endTime").val();
-    goPage(realName,dept,0,PAGESIZE);
+    goPage(realName,dept,1,PAGESIZE);
     });
 });
 function checkResult(result) {

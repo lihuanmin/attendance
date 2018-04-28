@@ -16,7 +16,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.alibaba.fastjson.JSON;
 
 import lee.attendance.commons.LoginRequired;
 import lee.attendance.commons.ResultMsg;
@@ -70,7 +73,7 @@ public class FileController {
 		model.addAttribute("userInfo", userInfo);
 		model.addAttribute("menuList", menuList);
 		System.out.println(url);
-		return "upload/upload";
+		return "file/upload";
 	}
 	/**
 	 * 文件列表
@@ -95,7 +98,7 @@ public class FileController {
 			uf.setDownloadName(url.substring(url.lastIndexOf("\\")+1));
 		}
 		model.addAttribute("fileList", list);
-		return "upload/download";
+		return "file/download";
 	}
 	@RequestMapping("download")
 	public void download(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -141,14 +144,41 @@ public class FileController {
 	  
 	    }  
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	/**
+	 * 部门信息
+	 * @return
+	 */
+	@RequestMapping("deptInfo")
+	public String deptInfo(HttpServletRequest req, Model model) {
+		int userId = (int)req.getSession().getAttribute("userId");
+		//用户基本信息
+		UserInfo userInfo = homeService.selectUserById(userId);
+		//用户左侧菜单栏
+		List<Menu> menuList = homeService.selectMenuByUserId(userId);
+		model.addAttribute("userInfo", userInfo);
+		model.addAttribute("menuList", menuList);
+		model.addAttribute("deptInfo", fileService.deptInfo(userId));
+		return "file/deptInfo";
+	}
+	@RequestMapping("deptMemPage")
+	public String deptMemPage(HttpServletRequest req, Model model) {
+		int userId = (int)req.getSession().getAttribute("userId");
+		//用户基本信息
+		UserInfo userInfo = homeService.selectUserById(userId);
+		//用户左侧菜单栏
+		List<Menu> menuList = homeService.selectMenuByUserId(userId);
+		model.addAttribute("userInfo", userInfo);
+		model.addAttribute("menuList", menuList);
+		return "file/deptMember";
+	}
+	@RequestMapping("deptMem")
+	@ResponseBody
+	public String deptMem(HttpServletRequest req,
+			@RequestParam("userName")String userName, 
+			@RequestParam("pageNumber")int pageNumber,
+			@RequestParam("pageSize")int pageSize) {
+		int userId = (int)req.getSession().getAttribute("userId");
+		return JSON.toJSONString(fileService.deptAllMem(userId, userName, pageNumber, pageSize));
+	}
 	
 }

@@ -50,4 +50,21 @@ public interface UserVerificationMapper {
     * @return
     */
     List<AllUser> queryAllUserDeptRole(@Param("realName")String realName, @Param("dept")String dept, @Param("pageSize")int pageSize, @Param("pageNumber")int pageNumber);
+    
+    /**
+     * 查询部门员工
+     * @param deptId
+     * @param userName
+     * @param pageSize
+     * @param pageNumber
+     * @return
+     */
+    List<AllUser> queryAllUser(@Param("deptId")int deptId, @Param("userName")String userName, @Param("pageSize")int pageSize, @Param("pageNumber")int pageNumber);
+    /**
+     * 部门员工个数
+     * @param userName
+     * @param deptId
+     * @return
+     */
+    Integer queryAccount(@Param("userName")String userName, @Param("deptId")int deptId);
 }

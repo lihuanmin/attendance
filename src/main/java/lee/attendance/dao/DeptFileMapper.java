@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import lee.attendance.domain.DeptFile;
+import lee.attendance.domain.transfer.DeptInfo;
 import lee.attendance.domain.transfer.UserFile;
 
 public interface DeptFileMapper {
@@ -24,4 +25,10 @@ public interface DeptFileMapper {
      * @return
      */
     List<UserFile> findAllFile(@Param("deptId")int deptId);
+    /**
+     * 查询部门信息，包括人数
+     * @param deptId
+     * @return
+     */
+    DeptInfo findDeptInfo(@Param("deptId")int deptId);
 }

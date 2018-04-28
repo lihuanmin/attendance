@@ -134,4 +134,37 @@
   	1 = 1
   	limit #{pageNumber}, #{pageSize}
   </select>
+  <select id="queryAllUser" resultType="AllUser">
+  SELECT
+	user_verification.account,
+	user_verification.id,
+	user_info.sex,
+	user_info.register_time as registerTime,
+	user_info.email,
+	user_info.phone,
+	user_info.real_name as realName,
+	role.roleName,
+	department.deptName
+	FROM
+	user_verification
+	LEFT JOIN user_info ON user_info.id = user_verification.id
+	LEFT JOIN user_dept ON user_verification.id = user_dept.userId
+	LEFT JOIN department ON department.deptId = user_dept.deptId
+	LEFT JOIN user_role ON user_role.userId = user_verification.id
+	LEFT JOIN role ON role.id = user_role.roleId
+	where 
+	 user_dept.deptId = #{deptId, jdbcType=INTEGER} and 
+ 	 <if test="userName != null and userName != ''">
+ 	 	user_info.real_name like CONCAT('%','${userName}','%') and 
+ 	 </if>
+  	1 = 1
+  	limit #{pageNumber}, #{pageSize}
+  </select>
+  <select id="queryAccount" resultType="java.lang.Integer">
+ 	SELECT count(*) FROM user_info LEFT JOIN user_dept ON user_info.id = user_dept.userId where user_dept.deptId = #{deptId, jdbcType=INTEGER} and 
+ 	<if test="userName !=null and userName !=''">
+ 		real_name like CONCAT('%','${userName}','%') and 
+ 	</if>
+ 	1=1
+ 	</select>
 </mapper>
