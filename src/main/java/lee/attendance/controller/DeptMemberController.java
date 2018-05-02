@@ -64,9 +64,42 @@ public class DeptMemberController {
 		PageResponse<MemberLeave> list = deptMemberService.memberLeave(userId, pageNumber, pageSize);
 		return JSON.toJSONString(list);
 	}
+	/**
+	 * 审核员工请假
+	 * @param id
+	 * @param re
+	 * @return
+	 */
 	@RequestMapping("check")
 	@ResponseBody
 	public ResultMsg check(@RequestParam("id")int id, @RequestParam("re")int re) {
 		return deptMemberService.check(id, re);
+	}
+	/**
+	 * 请假历史记录页面
+	 * @param req
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping("leaveHisPage")
+	public String leaveHisPage(HttpServletRequest req, Model model) {
+		int userId = (int)req.getSession().getAttribute("userId");
+		//用户基本信息
+		UserInfo userInfo = homeService.selectUserById(userId);
+		//用户左侧菜单栏
+		List<Menu> menuList = homeService.selectMenuByUserId(userId);
+		model.addAttribute("userInfo", userInfo);
+		model.addAttribute("menuList", menuList);
+		return "deptmem/hisLeave";
+	}
+	@RequestMapping("leaveHis")
+	@ResponseBody
+	public String leaveHis(
+			HttpServletRequest req,
+			@RequestParam("pageNumber")int pageNumber, 
+			@RequestParam("pageSize")int pageSize) {
+		int userId = (int)req.getSession().getAttribute("userId");
+		PageResponse<MemberLeave> list = deptMemberService.hisLeave(userId, pageNumber, pageSize);
+		return JSON.toJSONString(list);
 	}
 }

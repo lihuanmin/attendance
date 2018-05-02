@@ -34,4 +34,11 @@ public interface UserRoleMapper {
      * @return
      */
     int delUserRole(@Param("userId")int userId);
+    /**
+     * 根据用户id,查询用户角色
+     * @param userId
+     * @return
+     */
+    UserRole selectByUId(@Param("userId")int userId);
+    
 }

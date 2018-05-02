@@ -57,7 +57,7 @@
 	            <th>结束时间</th>
 	            <th>理由</th>
 	            <th>请假时间</th>
-	            <th colspan="2">审核</th>
+	            <th>审核结果</th>
 	        </tr>
 	    </thead>
 	    <tbody id="tableBody"></tbody>
@@ -74,7 +74,7 @@ function  parjsoneval (result) {
   return eval('(' + result + ')');
 };        
 function goPage(pageNumber, pageSize){
-  var url =  getUrl("deptMember/memleave"); 
+  var url =  getUrl("deptMember/leaveHis"); 
   var reqParams = {'pageNumber':(pageNumber-1)*10,'pageSize':pageSize};
   $(function () {
          $.ajax({
@@ -108,8 +108,7 @@ function goPage(pageNumber, pageSize){
                 $("#tableBody").append('<td>' + timeParse2(this.endTime) +'</td>');
                 $("#tableBody").append('<td>' + this.reason + '</td>');
                 $("#tableBody").append('<td>' + timeParse2(this.leaveTime) + '</td>');
-                $("#tableBody").append('<td><button onclick="check1('+this.id+')">同意</button></td>');
-                $("#tableBody").append('<td><button onclick="check2('+this.id+')">不同意</button></td>');
+                $("#tableBody").append('<td>'+getStatus(this.examResult)+'</td>');
                 $("#tableBody").append('</tr>');
                 });  
             } else {                                
@@ -151,32 +150,13 @@ $(function() {
     goPage(1,PAGESIZE);
     });
 });
-function timeParse2(time) {
-    var da = new Date(time);
-    var year = da.getFullYear();
-    var month = da.getMonth()+1;
-    var date = da.getDate();
-	return year+"-"+month+"-"+date;
-}
-function check1(id) {
-	$.ajax({
-		url:getUrl("deptMember/check"),
-		data:{"id":id, "re":2},
-		success:function(data) {
-			if(data.success)
-				window.location.href=getUrl("deptMember/memberLeave");
-		}
-	});
-}
-function check2(id) {
-	$.ajax({
-		url:getUrl("deptMember/check"),
-		data:{"id":id, "re":1},
-		success:function(data) {
-			if(data.success)
-				window.location.href=getUrl("deptMember/memberLeave");
-		}
-	});
+function getStatus(result) {
+	if(result==='1') {
+		return "未通过";
+	}else if(result==='2'){
+		return "通过";
+	}
+	
 }
 </script>
 </html>

@@ -162,15 +162,41 @@ FROM
 	user_leave 
 LEFT JOIN user_info ON user_leave.userId = user_info.id
 WHERE
-	deptId = #{deptId, jdbcType=INTEGER}  and type = 0 and limit #{pageNumber, jdbcType=INTEGER}, #{pageSize, jdbcType=INTEGER}
+	deptId = #{deptId, jdbcType=INTEGER}  and examResult = 0 and type = #{type, jdbcType=INTEGER} limit #{pageNumber, jdbcType=INTEGER}, #{pageSize, jdbcType=INTEGER}
+  </select>
+  <select id="findLeaveByZB" resultType="MemberLeave">
+  	SELECT user_leave.*, user_info.real_name AS userName FROM user_leave LEFT JOIN user_info ON user_leave.userId = user_info.id
+	WHERE  examResult = 0 and type = #{type, jdbcType=INTEGER} limit #{pageNumber, jdbcType=INTEGER}, #{pageSize, jdbcType=INTEGER}
+  </select>
+  <!-- 部门员工请假历史记录 -->
+  <select id="findLeaveByDeptHis" resultType="MemberLeave">
+	SELECT user_leave.*, user_info.real_name AS userName FROM user_leave  LEFT JOIN user_info ON user_leave.userId = user_info.id
+	WHERE  deptId = #{deptId, jdbcType=INTEGER}  and examResult<![CDATA[!= ]]>0 and type = #{type, jdbcType=INTEGER} limit #{pageNumber, jdbcType=INTEGER}, #{pageSize, jdbcType=INTEGER}
+  </select>
+  <!-- 经理请假历史记录 -->
+  <select id="findLeaveHisByZB" resultType="MemberLeave">
+	SELECT user_leave.*, user_info.real_name AS userName FROM user_leave LEFT JOIN user_info ON user_leave.userId = user_info.id
+	WHERE  examResult<![CDATA[!= ]]>0 and type = #{type, jdbcType=INTEGER} limit #{pageNumber, jdbcType=INTEGER}, #{pageSize, jdbcType=INTEGER}
   </select>
   <!-- 请假数量 -->
   <select id="findCountLeave" resultType="java.lang.Integer">
-  	select count(*) from user_leave where deptId = #{deptId, jdbcType=INTEGER}  and type = 0
+  	select count(*) from user_leave where deptId = #{deptId, jdbcType=INTEGER} and examResult=0 and type = #{type,jdbcType=INTEGER}
   </select>
+  <select id="findCountLeaveZB" resultType="java.lang.Integer">
+  	select count(*) from user_leave where examResult=0 and type = #{type,jdbcType=INTEGER}
+  </select>  
+  <!-- 员工请假历史记录数量 -->
+  <select id="findCountLeaveHis" resultType="java.lang.Integer">
+  	select count(*) from user_leave where deptId = #{deptId, jdbcType=INTEGER} and examResult<![CDATA[!= ]]>0 and type = #{type,jdbcType=INTEGER}
+  </select>
+  <!-- 经理请假历史记录 -->
+  <select id="findCountLeaveHisZB" resultType="java.lang.Integer">
+  	select count(*) from user_leave where examResult<![CDATA[!= ]]>0 and type = #{type,jdbcType=INTEGER}
+  </select>
+  
   <!-- 审核员工请假 -->
   <update id="checkLeave" >
-  	update user_leave set examResult =#{re,jdbcType=INTEGER}, examination=1 where id = #{id,jdbcType=INTEGER}
+  	update user_leave set examResult = #{examResult,jdbcType=TINYINT} where id = #{id,jdbcType=INTEGER}
   </update>
   <delete id="delLeave" parameterType="java.lang.Integer">
   	delete from user_leave where userId = #{userId,jdbcType=INTEGER}

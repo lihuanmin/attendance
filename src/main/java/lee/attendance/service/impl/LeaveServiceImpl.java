@@ -10,10 +10,11 @@ import org.springframework.stereotype.Service;
 
 import lee.attendance.commons.ResultMsg;
 import lee.attendance.commons.page.PageResponse;
-import lee.attendance.dao.UserLeaveMapper;
 import lee.attendance.dao.UserDeptMapper;
+import lee.attendance.dao.UserLeaveMapper;
+import lee.attendance.dao.UserRoleMapper;
 import lee.attendance.domain.UserLeave;
-import lee.attendance.domain.transfer.MemberLeave;
+import lee.attendance.domain.UserRole;
 import lee.attendance.service.LeaveService;
 
 @Service
@@ -22,13 +23,28 @@ public class LeaveServiceImpl implements LeaveService{
 	private UserDeptMapper userDeptMapper;
 	@Autowired
 	private UserLeaveMapper leaveMapper;
+	@Autowired
+	private UserRoleMapper userRoleMapper;
 	@Override
 	public ResultMsg leave(int userId, String start, String end, String reason)  {
+		UserLeave leave = new UserLeave();
 		//用户部门
 		int deptId = userDeptMapper.findDeptIdByUserId(userId);
+		//查询用户角色，根据角色判断用户请假类型
+		UserRole userRole = userRoleMapper.selectByUId(userId);
+		//角色id为1，类型为普通员工
+		if(userRole.getRoleId()==1) 
+			leave.setType((byte)0);
+		//角色id为2角色为部门经理，类型为1部门经理
+		else if(userRole.getRoleId()==2){
+			leave.setType((byte)1);
+		}else {
+		//角色id为三角色为ceo，类型为2ceo
+			leave.setType((byte)2);
+		}
+		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		try {
-			UserLeave leave = new UserLeave();
 			leave.setDeptId(deptId);
 			leave.setStartTime(sdf.parse(start));
 			leave.setEndTime(sdf.parse(end));

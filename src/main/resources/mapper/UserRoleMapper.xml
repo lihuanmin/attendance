@@ -78,4 +78,8 @@
   <delete id="delUserRole" parameterType="java.lang.Integer">
   	delete from user_role where userId = #{userId,jdbcType=INTEGER}
   </delete>
+  <!-- 根据用户id，查询用户角色-->
+  <select id="selectByUId" resultType="UserRole">
+  	select * from user_role where userId = #{userId, jdbcType=INTEGER}
+  </select>
 </mapper>
