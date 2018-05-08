@@ -16,6 +16,7 @@
     http://www.springframework.org/schema/tx/spring-tx.xsd  
     http://www.springframework.org/schema/aop  
     http://www.springframework.org/schema/aop/spring-aop.xsd "> 
+    <context:property-placeholder location="classpath:file.properties"/>
     <!-- 扫描bean -->
     <context:component-scan base-package="lee.attendance.controller"/>
     <!-- 映射器适配器，映射器处理器 -->

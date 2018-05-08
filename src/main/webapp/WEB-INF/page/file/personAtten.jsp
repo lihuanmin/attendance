@@ -47,6 +47,7 @@
 		</ul>
 	</div>
 	<div class="content">
+	<input type="text" id="userId" value="${userId}" style="display:none"/>
 	<div class="box">
 			<div class="demo2">
 			<form>
@@ -79,17 +80,18 @@ var PAGESIZE = 10;
 function  parjsoneval (result) {
   return eval('(' + result + ')');
 };        
-function goPage(startTime, endTime, pageNumber, pageSize){
-  var url =  getUrl("atten/listAtten"); 
+function goPage(userId, startTime, endTime, pageNumber, pageSize){
+  var url =  getUrl("file/listAtten"); 
   startTime = $("#startTime").val();
   endTime = $("#endTime").val();
+  userId = $("#userId").val();
   if(startTime.length===0){
 	  startTime = null;
   }
   if(endTime.length===0) {
 	  endTime = null;
   }
-  var reqParams = {'startTime':startTime, 'endTime':endTime, 'pageNumber':(pageNumber-1)*10,'pageSize':pageSize};
+  var reqParams = {'userId':userId, 'startTime':startTime, 'endTime':endTime, 'pageNumber':(pageNumber-1)*10,'pageSize':pageSize};
   $(function () {
          $.ajax({
           type:"POST",
@@ -158,11 +160,12 @@ function goPage(startTime, endTime, pageNumber, pageSize){
     
 }
 $(function() {
-    goPage("", "",1,PAGESIZE);
+	var userId = $("#userId").val();
+    goPage(userId, "", "",1,PAGESIZE);
     $("#queryButton").bind("click",function(){
-    var realName = $("#startTime").val();   
-    var dept = $("endTime").val();
-    goPage(realName,dept,0,PAGESIZE);
+    var startTime = $("#startTime").val();   
+    var endTime = $("endTime").val();
+    goPage(userId, startTime,endTime,0,PAGESIZE);
     });
 });
 function getStatus(status) {

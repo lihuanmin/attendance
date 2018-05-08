@@ -1,6 +1,6 @@
 package lee.attendance.service;
 
-import java.util.List;
+import java.util.Date;
 
 import lee.attendance.commons.ResultMsg;
 import lee.attendance.commons.page.PageResponse;
@@ -24,4 +24,20 @@ public interface LeaveService {
 	 * @return
 	 */
 	public abstract PageResponse<UserLeave> listLeave(int userId, int pageNumber, int pageSize, String startTime, String endTime);
+	/**
+	 * 根据id和时间范围查询用户请假上午
+	 * @param startTime
+	 * @param endTime
+	 * @param userId
+	 * @return
+	 */
+	public abstract UserLeave findLeave(String startTime, String endTime, int userId);
+	/**
+	 * 根据id和时间范围查询用户请假下午
+	 * @param startTime
+	 * @param endTime
+	 * @param userId
+	 * @return
+	 */
+	public abstract UserLeave findLeavePm(String startTime, String endTime, int userId);
 }

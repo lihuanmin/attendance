@@ -58,7 +58,6 @@
 		<table class="table table-bordered" id='tableResult'>
 	    <thead>
 	      <tr>
-            <th>序号</th>
             <th>用户名</th>
             <th>用户账号</th>
             <th>性别</th>
@@ -113,7 +112,6 @@ function goPage(userName, pageNumber, pageSize){
              if (dataList.length > 0 ) {
              $(dataList).each(function(){//重新生成
             	 $("#tableBody").append('<tr>');
-                 $("#tableBody").append('<td>' + this.id + '</td>');
                  $("#tableBody").append('<td>' + this.realName+ '</td>');
                  $("#tableBody").append('<td>' + this.account + '</td>');
                  $("#tableBody").append('<td>' + getSex(this.sex) +'</td>');

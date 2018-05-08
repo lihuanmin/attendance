@@ -144,4 +144,24 @@ public class AttendanceServiceImpl implements AttendanceService{
 		String pm = sdf.format(date) + " 18:00:00";
 		return pm;
 	}
+
+	@Override
+	public List<Attendance> findDayAttendByDay(Date date) {
+		return attendanceMapper.findDayAtten(date);
+	}
+
+	@Override
+	public void updateAmtatus(int id) {
+		attendanceMapper.updateAmStatus(id);
+	}
+
+	@Override
+	public List<Attendance> findDayAttendByDayPm(Date date) {
+		return attendanceMapper.findDayAttendByDayPm(date);
+	}
+
+	@Override
+	public void updatePmStatus(int id) {
+		attendanceMapper.updatePmStatus(id);
+	}
 }

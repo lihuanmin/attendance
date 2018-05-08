@@ -107,4 +107,20 @@ public interface UserLeaveMapper {
      * @return
      */
     int delLeave(@Param("userId")int userId);
+    /**
+     * 根据id和开始时间和结束时间插叙请假
+     * @param startTime
+     * @param endTime
+     * @param userId
+     * @return
+     */
+    UserLeave findLeaveByTimeAndId(@Param("startTime")String startTime, @Param("endTime")String endTime, @Param("userId")int userId);
+    /**
+     * 根据id和开始时间和结束时间插叙请假下午
+     * @param startTime
+     * @param endTime
+     * @param userId
+     * @return
+     */
+    UserLeave findLeaveByTimeAndIdPm(@Param("startTime")String startTime, @Param("endTime")String endTime, @Param("userId")int userId);
 }

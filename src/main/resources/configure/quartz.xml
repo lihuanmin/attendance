@@ -10,27 +10,55 @@
         http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd ">
         <!-- 加载数据源 -->
         <!-- <context:property-placeholder location="classpath:timer.properties"/> -->
-        
+        <!-- 插入数据类 -->
         <bean id="insertJob" class="lee.attendance.timer.InsertJob"></bean>
+        <!-- 上午判断操作 -->
+        <bean id="amJudge" class="lee.attendance.timer.AmJudge"></bean>
+        <!-- 下午判断操作 -->
+        <bean id="pmJudge" class="lee.attendance.timer.PmJudge"></bean>
+        
+        
         <bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         	<property name="targetObject" ref="insertJob"></property>
         	<property name="targetMethod" value="execute"></property>
         	<property name="concurrent" value="false"></property>
         </bean>
+        <!-- am judge -->
+        <bean id="amjudge" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        	<property name="targetObject" ref="amJudge"></property>
+        	<property name="targetMethod" value="execute"></property>
+        	<property name="concurrent" value="false"></property>
+        </bean>
+        <!-- pm judge -->
+        <bean id="pmjudge" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        	<property name="targetObject" ref="pmJudge"></property>
+        	<property name="targetMethod" value="execute"></property>
+        	<property name="concurrent" value="false"></property>
+        </bean>
+        
+        
+        
         <!-- 定义trigger触发器 -->
         <bean id="insertTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         	<property name="jobDetail" ref="jobDetail"></property>
         	<property name="cronExpression" value="${crond.myJob}"></property>
+        </bean>
+        <bean id="amTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        	<property name="jobDetail" ref="amjudge"></property>
+        	<property name="cronExpression" value="${cron.am}"></property>
+        </bean>
+        <bean id="pmTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        	<property name="jobDetail" ref="pmjudge"></property>
+        	<property name="cronExpression" value="${cron.pm}"></property>
         </bean>
         <!-- 设置触发器调度工厂 -->
         <bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         	<property name="triggers">
         		<list>
         			<ref bean="insertTrigger"/>
+        			<ref bean="amTrigger"/>
+        			<ref bean="pmTrigger"/>
         		</list>
         	</property>
         </bean>
-        
-        
-        
 </beans>

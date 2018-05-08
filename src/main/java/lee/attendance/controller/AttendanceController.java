@@ -48,6 +48,15 @@ public class AttendanceController {
 		model.addAttribute("menuList", menuList);
 		return "atten/atten";
 	}
+	/**
+	 * 考勤列表
+	 * @param startTime
+	 * @param endTime
+	 * @param pageNumber
+	 * @param pageSize
+	 * @param req
+	 * @return
+	 */
 	@RequestMapping("listAtten")
 	@ResponseBody
 	public String listAtten(

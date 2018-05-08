@@ -136,4 +136,17 @@
   <delete id="delAttendance" parameterType="java.lang.Integer">
   	delete from attendance where userId = #{userId,jdbcType=INTEGER}
   </delete>
+  <select id="findDayAtten" resultType="Attendance">
+  	select * from attendance where reference = #{date, jdbcType=DATE} and amStatus=0
+  </select>
+  <!-- 查询下午旷工的人 -->
+  <select id="findDayAttendByDayPm" resultType="Attendance">
+  	select * from attendance where reference = #{date, jdbcType=DATE} and pmStatus=0
+  </select>
+  <update id="updateAmStatus" parameterType="java.lang.Integer">
+  	update attendance set amStatus = 3 where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updatePmStatus" parameterType="java.lang.Integer">
+  	update attendance set pmStatus = 3 where id = #{id,jdbcType=INTEGER}
+  </update>
 </mapper>

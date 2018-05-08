@@ -23,10 +23,13 @@ import com.alibaba.fastjson.JSON;
 
 import lee.attendance.commons.LoginRequired;
 import lee.attendance.commons.ResultMsg;
+import lee.attendance.commons.page.PageResponse;
+import lee.attendance.domain.Attendance;
 import lee.attendance.domain.DeptFile;
 import lee.attendance.domain.Menu;
 import lee.attendance.domain.UserInfo;
 import lee.attendance.domain.transfer.UserFile;
+import lee.attendance.service.AttendanceService;
 import lee.attendance.service.FileService;
 import lee.attendance.service.HomeService;
 import lee.attendance.utils.FileUtil;
@@ -41,13 +44,15 @@ public class FileController {
 	private HomeService homeService;
 	@Autowired
 	private FileService fileService;
+	@Autowired
+	private AttendanceService attendanceService;
 	@RequestMapping("/upload")
 	@ResponseBody
 	public ResultMsg upload(HttpServletRequest req) {
 		int userId = (int)req.getSession().getAttribute("userId");
 		int deptId = fileService.findDeptIdByUserId(userId);
 		System.out.println(deptId);
-		String parentUrl = "H:"+File.separator;
+		String parentUrl = url + File.separator;
 		File file = new File(parentUrl + deptId);
 		if(!file.isDirectory()||!file.exists()){
 			file.mkdirs();
@@ -105,7 +110,7 @@ public class FileController {
 	    // 得到要下载的文件名  
 //	    String fileName = "H:\\2\\demo-2c459b71bc33488087d4a7502fc6c2cf.html";  
 	    String fileName =request.getParameter("filename");
-	    fileName = "H:\\"+fileService.findDeptIdByUserId((int)request.getSession().getAttribute("userId"))+"\\"+fileName;
+//	    fileName = fileService.findDeptIdByUserId((int)request.getSession().getAttribute("userId"))+"\\"+fileName;
 	    System.out.println(fileName);
 	    try {  
 //	        fileName = new String(fileName.getBytes("iso8859-1"), "UTF-8");  
@@ -118,7 +123,7 @@ public class FileController {
 	            return;  
 	        }  
 	        // 处理文件名  
-	        String realname = fileName.substring(fileName.lastIndexOf("\\")+1, fileName.lastIndexOf("-"))+fileName.substring(fileName.lastIndexOf("."));
+	        String realname = fileName.substring(fileName.lastIndexOf(File.separator)+1, fileName.lastIndexOf("-"))+fileName.substring(fileName.lastIndexOf("."));
 	        // 设置响应头，控制浏览器下载该文件  
 	        realname = URLEncoder.encode(realname,"UTF-8");  
             
@@ -171,6 +176,14 @@ public class FileController {
 		model.addAttribute("menuList", menuList);
 		return "file/deptMember";
 	}
+	/**
+	 * 员工列表
+	 * @param req
+	 * @param userName
+	 * @param pageNumber
+	 * @param pageSize
+	 * @return
+	 */
 	@RequestMapping("deptMem")
 	@ResponseBody
 	public String deptMem(HttpServletRequest req,
@@ -180,5 +193,36 @@ public class FileController {
 		int userId = (int)req.getSession().getAttribute("userId");
 		return JSON.toJSONString(fileService.deptAllMem(userId, userName, pageNumber, pageSize));
 	}
-	
+	@RequestMapping("perAttenPage")
+	public String perAttenPage(HttpServletRequest req, Model model,@RequestParam("id")int id) {
+		int userId = (int)req.getSession().getAttribute("userId");
+		//用户基本信息
+		UserInfo userInfo = homeService.selectUserById(userId);
+		//用户左侧菜单栏
+		List<Menu> menuList = homeService.selectMenuByUserId(userId);
+		model.addAttribute("userInfo", userInfo);
+		model.addAttribute("menuList", menuList);
+		model.addAttribute("userId", id);
+		return "file/personAtten";
+	}
+	/**
+	 * 员工考勤列表
+	 * @param startTime
+	 * @param endTime
+	 * @param pageNumber
+	 * @param pageSize
+	 * @param userId
+	 * @return
+	 */
+	@RequestMapping("listAtten")
+	@ResponseBody
+	public String listAtten(
+			@RequestParam("startTime")String startTime, 
+			@RequestParam("endTime")String endTime,
+			@RequestParam("pageNumber")int pageNumber, 
+			@RequestParam("pageSize")int pageSize,
+			@RequestParam("userId")int userId) {
+		PageResponse<Attendance> pr = attendanceService.queryAtten(startTime, endTime, userId, pageNumber, pageSize);
+		return JSON.toJSONString(pr);
+	}
 }

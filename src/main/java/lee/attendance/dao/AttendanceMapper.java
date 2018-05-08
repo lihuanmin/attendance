@@ -58,4 +58,25 @@ public interface AttendanceMapper {
      * @return
      */
     int delAttendance(@Param("userId")int userId);
+    /**
+     * 查询上午旷工记录
+     * @param date
+     * @return
+     */
+    List<Attendance> findDayAtten(@Param("date")Date date);
+    /**
+     * 查询下午旷工记录
+     * @param date
+     * @return
+     */
+    List<Attendance> findDayAttendByDayPm(@Param("date")Date date);
+    
+    /**
+     * 更新上午旷工的状态
+     * @param id
+     * @return
+     */
+    int updateAmStatus(@Param("id")int id);
+    
+    int updatePmStatus(@Param("id")int id);
 }

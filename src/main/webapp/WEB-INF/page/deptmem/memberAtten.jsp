@@ -48,29 +48,32 @@
 	</div>
 	<div class="content">
 	<div class="box">
-			<div class="demo2">
+	<div class="demo2">
 			<form>
-				<input placeholder="开始日期" id="startTime" name="startTime" class="laydate-icon" onClick="laydate({istime: true, format: 'YYYY-MM-DD'})">
-				<input placeholder="结束日期" id="endTime" name="endTime" class="laydate-icon" onClick="laydate({istime: true, format: 'YYYY-MM-DD'})">
+				<input placeholder="姓名" id="userName" name="userName" class="laydate-icon">
 				<input id = "queryButton" class="btn btn-primary" type="button" value="查询">
 			</form>
-			</div>
-		</div>
+	</div>
+	</div>
 		<table class="table table-bordered" id='tableResult'>
 	    <thead>
-	        <tr>
-	            <th>上午考勤</th>
-	            <th>上午状态</th>
-	            <th>下午考勤</th>
-	            <th>下午状态</th>
-	            <th>考勤日期</th>
-	        </tr>
+	      <tr>
+            <th>用户名</th>
+            <th>用户账号</th>
+            <th>性别</th>
+            <th>注册时间</th>
+            <th>邮箱</th>
+            <th>电话</th>
+            <th>角色名</th>
+            <th>部门名</th>
+            <th>查看考勤</th>
+        </tr>
 	    </thead>
 	    <tbody id="tableBody"></tbody>
-</table>
-<table width="60%" align="right">
-        <tr><td><div id="barcon" name="barcon"></div></td></tr>
-</table>
+		</table>
+		<table width="60%" align="right">
+		        <tr><td><div id="barcon" name="barcon"></div></td></tr>
+		</table>
 	</div>
 </body>
 <script language="JavaScript">
@@ -79,17 +82,10 @@ var PAGESIZE = 10;
 function  parjsoneval (result) {
   return eval('(' + result + ')');
 };        
-function goPage(startTime, endTime, pageNumber, pageSize){
-  var url =  getUrl("atten/listAtten"); 
-  startTime = $("#startTime").val();
-  endTime = $("#endTime").val();
-  if(startTime.length===0){
-	  startTime = null;
-  }
-  if(endTime.length===0) {
-	  endTime = null;
-  }
-  var reqParams = {'startTime':startTime, 'endTime':endTime, 'pageNumber':(pageNumber-1)*10,'pageSize':pageSize};
+function goPage(userName, pageNumber, pageSize){
+  var url =  getUrl("file/deptMem"); 
+  userName= $("#userName").val();
+  var reqParams = {'userName':userName, 'pageNumber':(pageNumber-1)*10,'pageSize':pageSize};
   $(function () {
          $.ajax({
           type:"POST",
@@ -116,13 +112,17 @@ function goPage(startTime, endTime, pageNumber, pageSize){
              $("#tableBody").empty();//清空表格
              if (dataList.length > 0 ) {
              $(dataList).each(function(){//重新生成
-                $("#tableBody").append('<tr>');
-                $("#tableBody").append('<td>' + timeParse(this.workTime) + '</td>');
-                $("#tableBody").append('<td>' + getStatus(this.amStatus) + '</td>');
-                $("#tableBody").append('<td>' + timeParse(this.endTime) +'</td>');
-                $("#tableBody").append('<td>' + getStatus(this.pmStatus) + '</td>');
-                $("#tableBody").append('<td>' + timeParse2(this.reference) + '</td>');
-                $("#tableBody").append('</tr>');
+            	 $("#tableBody").append('<tr>');
+                 $("#tableBody").append('<td>' + this.realName+ '</td>');
+                 $("#tableBody").append('<td>' + this.account + '</td>');
+                 $("#tableBody").append('<td>' + getSex(this.sex) +'</td>');
+                 $("#tableBody").append('<td>' + timeParse(this.registerTime)+ '</td>');
+                 $("#tableBody").append('<td>' + this.email + '</td>');
+                 $("#tableBody").append('<td>' + this.phone+ '</td>');
+                 $("#tableBody").append('<td>' + this.roleName + '</td>');
+                 $("#tableBody").append('<td>' + this.deptName + '</td>');
+                 $("#tableBody").append('<td><a href="/attendance/file/perAttenPage?id='+this.id+'">查看</a></td>');
+                 $("#tableBody").append('</tr>');
                 });  
             } else {                                
                 $("#tableBody").append('<tr><th colspan ="4"><center>查询无数据</center></th></tr>');
@@ -132,18 +132,18 @@ function goPage(startTime, endTime, pageNumber, pageSize){
            
             if(currentPage>1){
                 pageNumber=1;
-                tempStr += "<a href=\"#\" onClick=\"goPage("+startTime+","+endTime+","+pageNumber+","+pageSize+")\">首页</a>";
+                tempStr += "<a href=\"#\" onClick=\"goPage("+userName+","+pageNumber+","+pageSize+")\">首页</a>";
                 pageNumber = currentPage-1;
-                tempStr += "<a href=\"#\" onClick=\"goPage("+startTime+","+endTime+","+pageNumber+","+pageSize+")\"><上一页</a>"
+                tempStr += "<a href=\"#\" onClick=\"goPage("+userName+","+pageNumber+","+pageSize+")\"><上一页</a>"
              }else{
                 tempStr += "首页";
                 tempStr += "<上一页";    
              }
              if(currentPage<totalPage){
                 pageNumber = currentPage+1;
-                tempStr += "<a href=\"#\" onClick=\"goPage("+startTime+","+endTime+","+pageNumber+","+pageSize+")\">下一页></a>";
+                tempStr += "<a href=\"#\" onClick=\"goPage("+userName+","+pageNumber+","+pageSize+")\">下一页></a>";
                 pageNumber = totalPage
-                tempStr += "<a href=\"#\" onClick=\"goPage("+startTime+","+endTime+","+pageNumber+","+pageSize+")\">尾页</a>";
+                tempStr += "<a href=\"#\" onClick=\"goPage("+userName+","+pageNumber+","+pageSize+")\">尾页</a>";
             }else{
                 tempStr += "下一页>";
                 tempStr += "尾页";    
@@ -158,58 +158,18 @@ function goPage(startTime, endTime, pageNumber, pageSize){
     
 }
 $(function() {
-    goPage("", "",1,PAGESIZE);
+    goPage("", 1,PAGESIZE);
     $("#queryButton").bind("click",function(){
-    var realName = $("#startTime").val();   
-    var dept = $("endTime").val();
-    goPage(realName,dept,0,PAGESIZE);
+    var userName = $("#userName").val();   
+    goPage(userName,1,PAGESIZE);
     });
 });
-function getStatus(status) {
-	if(status===0) {
-		return "旷工";
-	}else if(status === 1){
-		return "迟到";
-	}else if(status === 2){
-		return "签到成功";
-	}else if (status === 3) {
-		return "请假";
-	}else {
-		return "未知状态";
-	}
+function  getSex(sex) {
+	if(sex)
+		return '男';
+	else
+		return '女';
 }
-</script>
 
-
-<script type="text/javascript">
-!function(){
-	laydate.skin('molv');//切换皮肤，请查看skins下面皮肤库
-	laydate({elem: '#demo'});//绑定元素
-}();
-//日期范围限制
-var start = {
-    elem: '#start',
-    format: 'YYYY-MM-DD',
-    min: laydate.now(), //设定最小日期为当前日期
-    max: '2099-06-16', //最大日期
-    istime: true,
-    istoday: false,
-    choose: function(datas){
-         end.min = datas; //开始日选好后，重置结束日的最小日期
-         end.start = datas //将结束日的初始值设定为开始日
-    }
-};
-var end = {
-    elem: '#end',
-    format: 'YYYY-MM-DD',
-    min: laydate.now(),
-    max: '2099-06-16',
-    istime: true,
-    istoday: false,
-    choose: function(datas){
-        start.max = datas; //结束日选好后，充值开始日的最大日期
-    }
-};
-}
 </script>
 </html>

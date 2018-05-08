@@ -205,5 +205,11 @@ WHERE
   <select id="findLeaveCount" resultType="java.lang.Integer">
   	select count(*) from user_leave where userId = #{userId,jdbcType=INTEGER} and   <![CDATA[ leaveTime >= #{startTime,jdbcType=DATE}  ]]> and <![CDATA[ leaveTime <= #{endTime,jdbcType=DATE}  ]]>
   </select>
-  
+  <!-- 根据id和开始时间和结束时间查询用户请假 -->
+  <select id="findLeaveByTimeAndId" resultType="UserLeave">
+  	select * from user_leave where <![CDATA[ startTime <= #{startTime,jdbcType=VARCHAR}]]> and  <![CDATA[ endTime >= #{endTime,jdbcType=VARCHAR}]]> and userId = #{userId, jdbcType=INTEGER} and examResult=2 
+  </select>
+  <select id="findLeaveByTimeAndIdPm" resultType="UserLeave">
+  select * from user_leave where <![CDATA[ startTime <= #{startTime,jdbcType=VARCHAR}]]> and  <![CDATA[ endTime >= #{endTime,jdbcType=VARCHAR}]]> and userId = #{userId, jdbcType=INTEGER} and examResult=2 
+  </select>
 </mapper>

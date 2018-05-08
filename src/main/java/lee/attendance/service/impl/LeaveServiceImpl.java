@@ -107,4 +107,12 @@ public class LeaveServiceImpl implements LeaveService{
 		now = now.substring(0, now.lastIndexOf("-"))+"-31";
 		return now;
 	}
+	@Override
+	public UserLeave findLeave(String startTime, String endTime, int userId) {
+		return leaveMapper.findLeaveByTimeAndId(startTime, endTime, userId);
+	}
+	@Override
+	public UserLeave findLeavePm(String startTime, String endTime, int userId) {
+		return leaveMapper.findLeaveByTimeAndIdPm(startTime, endTime, userId);
+	}
 }

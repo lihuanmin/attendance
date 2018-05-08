@@ -51,7 +51,6 @@
     	<caption>查询用户结果</caption>
 	    <thead>
 	        <tr>
-	            <th>序号</th>
 	            <th>姓名</th>
 	            <th>开始时间</th>
 	            <th>结束时间</th>
@@ -102,12 +101,11 @@ function goPage(pageNumber, pageSize){
              if (dataList.length > 0 ) {
              $(dataList).each(function(){//重新生成
                 $("#tableBody").append('<tr>');
-                $("#tableBody").append('<td>' + this.id + '</td>');
                 $("#tableBody").append('<td>' + this.userName + '</td>');
-                $("#tableBody").append('<td>' + timeParse2(this.startTime) + '</td>');
-                $("#tableBody").append('<td>' + timeParse2(this.endTime) +'</td>');
+                $("#tableBody").append('<td>' + timeParse(this.startTime) + '</td>');
+                $("#tableBody").append('<td>' + timeParse(this.endTime) +'</td>');
                 $("#tableBody").append('<td>' + this.reason + '</td>');
-                $("#tableBody").append('<td>' + timeParse2(this.leaveTime) + '</td>');
+                $("#tableBody").append('<td>' + timeParse(this.leaveTime) + '</td>');
                 $("#tableBody").append('<td>'+getStatus(this.examResult)+'</td>');
                 $("#tableBody").append('</tr>');
                 });  

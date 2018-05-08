@@ -92,6 +92,13 @@ public class DeptMemberController {
 		model.addAttribute("menuList", menuList);
 		return "deptmem/hisLeave";
 	}
+	/**
+	 * 请假历史记录
+	 * @param req
+	 * @param pageNumber
+	 * @param pageSize
+	 * @return
+	 */
 	@RequestMapping("leaveHis")
 	@ResponseBody
 	public String leaveHis(
@@ -101,5 +108,22 @@ public class DeptMemberController {
 		int userId = (int)req.getSession().getAttribute("userId");
 		PageResponse<MemberLeave> list = deptMemberService.hisLeave(userId, pageNumber, pageSize);
 		return JSON.toJSONString(list);
+	}
+	/**
+	 * 员工考勤页面
+	 * @param req
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping("memAttenPage")
+	public String memAttenPage(HttpServletRequest req, Model model) {
+		int userId = (int)req.getSession().getAttribute("userId");
+		//用户基本信息
+		UserInfo userInfo = homeService.selectUserById(userId);
+		//用户左侧菜单栏
+		List<Menu> menuList = homeService.selectMenuByUserId(userId);
+		model.addAttribute("userInfo", userInfo);
+		model.addAttribute("menuList", menuList);
+		return "deptmem/memberAtten";
 	}
 }
