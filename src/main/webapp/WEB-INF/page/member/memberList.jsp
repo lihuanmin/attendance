@@ -50,7 +50,6 @@
 <table class="table table-bordered" id = 'tableResult'>
     <thead>
         <tr>
-            <th>序号</th>
             <th>用户名</th>
             <th>用户账号</th>
             <th>性别</th>
@@ -115,11 +114,10 @@ function goPage(realName, dept, pageNumber, pageSize){
              if (dataList.length > 0 ) {
              $(dataList).each(function(){//重新生成
                 $("#tableBody").append('<tr>');
-                $("#tableBody").append('<td>' + this.id + '</td>');
                 $("#tableBody").append('<td>' + this.realName+ '</td>');
                 $("#tableBody").append('<td>' + this.account + '</td>');
                 $("#tableBody").append('<td>' + getSex(this.sex) +'</td>');
-                $("#tableBody").append('<td>' + timeParse(this.registerTime)+ '</td>');
+                $("#tableBody").append('<td>' + timeParse3(this.registerTime)+ '</td>');
                 $("#tableBody").append('<td>' + this.email + '</td>');
                 $("#tableBody").append('<td>' + this.phone+ '</td>');
                 $("#tableBody").append('<td>' + this.roleName + '</td>');
@@ -181,6 +179,13 @@ function del(userId) {
 				windows.location.href=getUrl("member/memberListPage");
 		}
 	});
+}
+function timeParse3(t) {
+	var da = new Date(t);
+	var year = da.getFullYear();
+	var month = da.getMonth()+1;
+	var day = da.getDate();
+	return year+'-'+month+'-'+day;
 }
 </script>
 </html>

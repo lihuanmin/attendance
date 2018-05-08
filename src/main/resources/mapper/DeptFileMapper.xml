@@ -95,6 +95,6 @@
   </select>
   <!-- 查询部门信息包括人数 -->
   <select id="findDeptInfo" resultType="DeptInfo">
-  	SELECT department.*, ( SELECT count(*) FROM user_dept WHERE department.deptId = #{deptId,jdbcType=INTEGER}) as memberCount FROM department where department.deptId = #{deptId,jdbcType=INTEGER}
+  	SELECT department.*, ( SELECT count(*) FROM user_dept WHERE deptId = #{deptId,jdbcType=INTEGER}) as memberCount FROM department where department.deptId = #{deptId,jdbcType=INTEGER}
   </select>
 </mapper>

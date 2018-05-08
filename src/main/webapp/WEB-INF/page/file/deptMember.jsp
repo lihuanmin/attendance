@@ -64,8 +64,6 @@
             <th>注册时间</th>
             <th>邮箱</th>
             <th>电话</th>
-            <th>角色名</th>
-            <th>部门名</th>
         </tr>
 	    </thead>
 	    <tbody id="tableBody"></tbody>
@@ -118,8 +116,6 @@ function goPage(userName, pageNumber, pageSize){
                  $("#tableBody").append('<td>' + timeParse(this.registerTime)+ '</td>');
                  $("#tableBody").append('<td>' + this.email + '</td>');
                  $("#tableBody").append('<td>' + this.phone+ '</td>');
-                 $("#tableBody").append('<td>' + this.roleName + '</td>');
-                 $("#tableBody").append('<td>' + this.deptName + '</td>');
                  $("#tableBody").append('</tr>');
                 });  
             } else {                                

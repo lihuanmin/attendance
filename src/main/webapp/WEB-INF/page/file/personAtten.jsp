@@ -165,7 +165,7 @@ $(function() {
     $("#queryButton").bind("click",function(){
     var startTime = $("#startTime").val();   
     var endTime = $("endTime").val();
-    goPage(userId, startTime,endTime,0,PAGESIZE);
+    goPage(userblesId, startTime,endTime,0,PAGESIZE);
     });
 });
 function getStatus(status) {
