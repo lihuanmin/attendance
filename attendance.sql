@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2018-04-28 14:17:32
+Date: 2018-05-14 17:22:23
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -28,18 +28,14 @@ CREATE TABLE `attendance` (
   `pmStatus` int(255) DEFAULT '0' COMMENT '0旷工，1下午早退，2下午签到',
   `reference` date NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of attendance
 -- ----------------------------
 INSERT INTO `attendance` VALUES ('1', '1', null, '2018-04-27 19:20:43', '0', '2', '2018-04-27');
 INSERT INTO `attendance` VALUES ('2', '41', null, '2018-04-27 19:19:38', '0', '2', '2018-04-27');
-INSERT INTO `attendance` VALUES ('3', '43', null, '2018-04-27 19:18:27', '0', '2', '2018-04-27');
 INSERT INTO `attendance` VALUES ('4', '44', null, '2018-04-27 19:20:20', '0', '2', '2018-04-27');
-INSERT INTO `attendance` VALUES ('5', '45', null, '2018-04-27 19:20:35', '0', '2', '2018-04-27');
-INSERT INTO `attendance` VALUES ('6', '46', null, '2018-04-27 19:21:09', '0', '2', '2018-04-27');
-INSERT INTO `attendance` VALUES ('7', '47', null, '2018-04-27 19:21:21', '0', '2', '2018-04-27');
 
 -- ----------------------------
 -- Table structure for department
@@ -59,7 +55,7 @@ CREATE TABLE `department` (
 -- ----------------------------
 INSERT INTO `department` VALUES ('1', '总部', 'ZB', 'root', '总部');
 INSERT INTO `department` VALUES ('10', '技术部', 'JSB', '康乐乐', '技术部，负责公司的技术支持');
-INSERT INTO `department` VALUES ('11', '销售部', 'XSB', '王浩', '负责公司产品销售');
+INSERT INTO `department` VALUES ('11', '销售部', 'XSB', '陈飞', '负责公司产品销售');
 
 -- ----------------------------
 -- Table structure for dept_file
@@ -90,7 +86,7 @@ CREATE TABLE `menu` (
   `url` varchar(40) NOT NULL,
   `parentId` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of menu
@@ -109,7 +105,7 @@ INSERT INTO `menu` VALUES ('13', 'RMS', '角色管理', '/attendance/role/role',
 INSERT INTO `menu` VALUES ('14', 'AR', '添加角色', '/attendance/role/addRole', '12');
 INSERT INTO `menu` VALUES ('17', 'BMGL', '部门管理', '#', '0');
 INSERT INTO `menu` VALUES ('18', 'YGQJ', '员工请假', '/attendance/deptMember/memberLeave', '17');
-INSERT INTO `menu` VALUES ('19', 'YGKQ', '员工考勤', '/', '17');
+INSERT INTO `menu` VALUES ('19', 'YGKQ', '员工考勤', '/attendance/deptMember/memAttenPage', '17');
 INSERT INTO `menu` VALUES ('20', 'WYQJ', '我要请假', '/attendance/leave/myleave', '28');
 INSERT INTO `menu` VALUES ('21', 'CKQJ', '查看请假', '/attendance/leave/leavePage', '28');
 INSERT INTO `menu` VALUES ('22', 'WDKQ', '我的考勤', '#', '0');
@@ -120,6 +116,7 @@ INSERT INTO `menu` VALUES ('27', 'WDKQ', '我的考勤', '/attendance/atten/atte
 INSERT INTO `menu` VALUES ('28', 'QJGL', '请假管理', '#', '0');
 INSERT INTO `menu` VALUES ('29', 'BMCY', '部门成员', '/attendance/file/deptMemPage', '24');
 INSERT INTO `menu` VALUES ('30', 'BMXX', '部门信息', '/attendance/file/deptInfo', '24');
+INSERT INTO `menu` VALUES ('31', 'QJJL', '请假记录', '/attendance/deptMember/leaveHisPage', '17');
 
 -- ----------------------------
 -- Table structure for role
@@ -148,7 +145,7 @@ CREATE TABLE `role_menu` (
   `roleId` int(11) NOT NULL,
   `menuId` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=274 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=350 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of role_menu
@@ -172,59 +169,62 @@ INSERT INTO `role_menu` VALUES ('46', '9', '13');
 INSERT INTO `role_menu` VALUES ('47', '9', '14');
 INSERT INTO `role_menu` VALUES ('48', '9', '15');
 INSERT INTO `role_menu` VALUES ('49', '9', '16');
-INSERT INTO `role_menu` VALUES ('221', '2', '1');
-INSERT INTO `role_menu` VALUES ('222', '2', '3');
-INSERT INTO `role_menu` VALUES ('223', '2', '4');
-INSERT INTO `role_menu` VALUES ('224', '2', '5');
-INSERT INTO `role_menu` VALUES ('225', '2', '6');
-INSERT INTO `role_menu` VALUES ('226', '2', '7');
-INSERT INTO `role_menu` VALUES ('227', '2', '17');
-INSERT INTO `role_menu` VALUES ('228', '2', '18');
-INSERT INTO `role_menu` VALUES ('229', '2', '19');
-INSERT INTO `role_menu` VALUES ('230', '2', '22');
-INSERT INTO `role_menu` VALUES ('231', '2', '27');
-INSERT INTO `role_menu` VALUES ('232', '2', '24');
-INSERT INTO `role_menu` VALUES ('233', '2', '25');
-INSERT INTO `role_menu` VALUES ('234', '2', '26');
-INSERT INTO `role_menu` VALUES ('235', '2', '28');
-INSERT INTO `role_menu` VALUES ('236', '2', '20');
-INSERT INTO `role_menu` VALUES ('237', '2', '21');
-INSERT INTO `role_menu` VALUES ('238', '3', '1');
-INSERT INTO `role_menu` VALUES ('239', '3', '3');
-INSERT INTO `role_menu` VALUES ('240', '3', '4');
-INSERT INTO `role_menu` VALUES ('241', '3', '5');
-INSERT INTO `role_menu` VALUES ('242', '3', '6');
-INSERT INTO `role_menu` VALUES ('243', '3', '7');
-INSERT INTO `role_menu` VALUES ('244', '3', '9');
-INSERT INTO `role_menu` VALUES ('245', '3', '10');
-INSERT INTO `role_menu` VALUES ('246', '3', '11');
-INSERT INTO `role_menu` VALUES ('247', '3', '12');
-INSERT INTO `role_menu` VALUES ('248', '3', '13');
-INSERT INTO `role_menu` VALUES ('249', '3', '14');
-INSERT INTO `role_menu` VALUES ('250', '3', '17');
-INSERT INTO `role_menu` VALUES ('251', '3', '18');
-INSERT INTO `role_menu` VALUES ('252', '3', '19');
-INSERT INTO `role_menu` VALUES ('253', '3', '22');
-INSERT INTO `role_menu` VALUES ('254', '3', '27');
-INSERT INTO `role_menu` VALUES ('255', '3', '24');
-INSERT INTO `role_menu` VALUES ('256', '3', '25');
-INSERT INTO `role_menu` VALUES ('257', '3', '26');
-INSERT INTO `role_menu` VALUES ('258', '3', '28');
-INSERT INTO `role_menu` VALUES ('259', '3', '20');
-INSERT INTO `role_menu` VALUES ('260', '3', '21');
-INSERT INTO `role_menu` VALUES ('261', '1', '1');
-INSERT INTO `role_menu` VALUES ('262', '1', '3');
-INSERT INTO `role_menu` VALUES ('263', '1', '4');
-INSERT INTO `role_menu` VALUES ('264', '1', '22');
-INSERT INTO `role_menu` VALUES ('265', '1', '27');
-INSERT INTO `role_menu` VALUES ('266', '1', '24');
-INSERT INTO `role_menu` VALUES ('267', '1', '25');
-INSERT INTO `role_menu` VALUES ('268', '1', '26');
-INSERT INTO `role_menu` VALUES ('269', '1', '29');
-INSERT INTO `role_menu` VALUES ('270', '1', '30');
-INSERT INTO `role_menu` VALUES ('271', '1', '28');
-INSERT INTO `role_menu` VALUES ('272', '1', '20');
-INSERT INTO `role_menu` VALUES ('273', '1', '21');
+INSERT INTO `role_menu` VALUES ('274', '3', '1');
+INSERT INTO `role_menu` VALUES ('275', '3', '3');
+INSERT INTO `role_menu` VALUES ('276', '3', '4');
+INSERT INTO `role_menu` VALUES ('277', '3', '5');
+INSERT INTO `role_menu` VALUES ('278', '3', '6');
+INSERT INTO `role_menu` VALUES ('279', '3', '7');
+INSERT INTO `role_menu` VALUES ('280', '3', '9');
+INSERT INTO `role_menu` VALUES ('281', '3', '10');
+INSERT INTO `role_menu` VALUES ('282', '3', '11');
+INSERT INTO `role_menu` VALUES ('283', '3', '12');
+INSERT INTO `role_menu` VALUES ('284', '3', '13');
+INSERT INTO `role_menu` VALUES ('285', '3', '14');
+INSERT INTO `role_menu` VALUES ('286', '3', '17');
+INSERT INTO `role_menu` VALUES ('287', '3', '18');
+INSERT INTO `role_menu` VALUES ('288', '3', '19');
+INSERT INTO `role_menu` VALUES ('289', '3', '31');
+INSERT INTO `role_menu` VALUES ('290', '3', '22');
+INSERT INTO `role_menu` VALUES ('291', '3', '27');
+INSERT INTO `role_menu` VALUES ('292', '3', '24');
+INSERT INTO `role_menu` VALUES ('293', '3', '25');
+INSERT INTO `role_menu` VALUES ('294', '3', '26');
+INSERT INTO `role_menu` VALUES ('295', '3', '29');
+INSERT INTO `role_menu` VALUES ('296', '3', '30');
+INSERT INTO `role_menu` VALUES ('297', '3', '28');
+INSERT INTO `role_menu` VALUES ('298', '3', '20');
+INSERT INTO `role_menu` VALUES ('299', '3', '21');
+INSERT INTO `role_menu` VALUES ('320', '1', '1');
+INSERT INTO `role_menu` VALUES ('321', '1', '3');
+INSERT INTO `role_menu` VALUES ('322', '1', '4');
+INSERT INTO `role_menu` VALUES ('323', '1', '22');
+INSERT INTO `role_menu` VALUES ('324', '1', '27');
+INSERT INTO `role_menu` VALUES ('325', '1', '24');
+INSERT INTO `role_menu` VALUES ('326', '1', '25');
+INSERT INTO `role_menu` VALUES ('327', '1', '26');
+INSERT INTO `role_menu` VALUES ('328', '1', '29');
+INSERT INTO `role_menu` VALUES ('329', '1', '30');
+INSERT INTO `role_menu` VALUES ('330', '1', '28');
+INSERT INTO `role_menu` VALUES ('331', '1', '20');
+INSERT INTO `role_menu` VALUES ('332', '1', '21');
+INSERT INTO `role_menu` VALUES ('333', '2', '1');
+INSERT INTO `role_menu` VALUES ('334', '2', '3');
+INSERT INTO `role_menu` VALUES ('335', '2', '4');
+INSERT INTO `role_menu` VALUES ('336', '2', '17');
+INSERT INTO `role_menu` VALUES ('337', '2', '18');
+INSERT INTO `role_menu` VALUES ('338', '2', '19');
+INSERT INTO `role_menu` VALUES ('339', '2', '31');
+INSERT INTO `role_menu` VALUES ('340', '2', '22');
+INSERT INTO `role_menu` VALUES ('341', '2', '27');
+INSERT INTO `role_menu` VALUES ('342', '2', '24');
+INSERT INTO `role_menu` VALUES ('343', '2', '25');
+INSERT INTO `role_menu` VALUES ('344', '2', '26');
+INSERT INTO `role_menu` VALUES ('345', '2', '29');
+INSERT INTO `role_menu` VALUES ('346', '2', '30');
+INSERT INTO `role_menu` VALUES ('347', '2', '28');
+INSERT INTO `role_menu` VALUES ('348', '2', '20');
+INSERT INTO `role_menu` VALUES ('349', '2', '21');
 
 -- ----------------------------
 -- Table structure for user_dept
@@ -235,22 +235,20 @@ CREATE TABLE `user_dept` (
   `userId` int(11) NOT NULL,
   `deptId` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of user_dept
 -- ----------------------------
 INSERT INTO `user_dept` VALUES ('1', '1', '1');
-INSERT INTO `user_dept` VALUES ('41', '38', '10');
-INSERT INTO `user_dept` VALUES ('42', '39', '10');
-INSERT INTO `user_dept` VALUES ('43', '40', '10');
 INSERT INTO `user_dept` VALUES ('44', '41', '10');
-INSERT INTO `user_dept` VALUES ('45', '42', '11');
 INSERT INTO `user_dept` VALUES ('46', '43', '11');
 INSERT INTO `user_dept` VALUES ('47', '44', '11');
 INSERT INTO `user_dept` VALUES ('48', '45', '11');
 INSERT INTO `user_dept` VALUES ('49', '46', '10');
 INSERT INTO `user_dept` VALUES ('50', '47', '10');
+INSERT INTO `user_dept` VALUES ('51', '48', '10');
+INSERT INTO `user_dept` VALUES ('52', '49', '10');
 
 -- ----------------------------
 -- Table structure for user_info
@@ -271,13 +269,10 @@ CREATE TABLE `user_info` (
 -- ----------------------------
 -- Records of user_info
 -- ----------------------------
-INSERT INTO `user_info` VALUES ('1', '/attendance/static/img/background_a.jpg', '世界不应该是这样的', '1', '2018-04-26', 'lihuanminlhm@163.com', '18482259291', 'root');
+INSERT INTO `user_info` VALUES ('1', '/attendance/static/img/background_a.jpg', '什么是真实的', '1', '2018-04-26', 'lihuanminlhm@163.com', '18482259291', 'root');
 INSERT INTO `user_info` VALUES ('41', '/attendance/static/img/background_a.jpg', '', '0', '2018-04-27', '', '', '康乐乐');
-INSERT INTO `user_info` VALUES ('43', '/attendance/static/img/background_a.jpg', '', '1', '2018-04-27', '', '', '王浩');
-INSERT INTO `user_info` VALUES ('44', '/attendance/static/img/background_a.jpg', '', '1', '2018-04-27', '', '', '陈飞');
-INSERT INTO `user_info` VALUES ('45', '/attendance/static/img/background_a.jpg', '', '0', '2018-04-27', '', '', '张梅');
-INSERT INTO `user_info` VALUES ('46', '/attendance/static/img/background_a.jpg', '', '1', '2018-04-27', '', '', '赵成林');
-INSERT INTO `user_info` VALUES ('47', '/attendance/static/img/background_a.jpg', 'hah', '1', '2018-04-27', 'jsbthc@qq.com', '18562125489', '田后成');
+INSERT INTO `user_info` VALUES ('44', '/attendance/static/img/background_a.jpg', '陈飞', '1', '2018-04-27', 'chenfei@qq.com', '18521564871', '陈飞');
+INSERT INTO `user_info` VALUES ('48', '/attendance/static/img/background_a.jpg', '', '1', '2018-05-12', '', '', '王瑞');
 
 -- ----------------------------
 -- Table structure for user_leave
@@ -295,12 +290,12 @@ CREATE TABLE `user_leave` (
   `leaveTime` datetime DEFAULT NULL,
   `type` tinyint(4) NOT NULL DEFAULT '0' COMMENT '0普通，1部门经理',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of user_leave
 -- ----------------------------
-INSERT INTO `user_leave` VALUES ('1', '47', '2018-04-28 14:00:00', '2018-05-01 00:00:00', '事假', '10', '0', null, '2018-04-27 21:19:39', '0');
+INSERT INTO `user_leave` VALUES ('2', '44', '2018-05-10 08:00:00', '2018-05-10 18:00:00', '事假', '11', '2', null, '2018-05-09 20:57:17', '0');
 
 -- ----------------------------
 -- Table structure for user_role
@@ -311,7 +306,7 @@ CREATE TABLE `user_role` (
   `roleId` int(11) NOT NULL,
   `userId` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of user_role
@@ -322,11 +317,13 @@ INSERT INTO `user_role` VALUES ('33', '2', '39');
 INSERT INTO `user_role` VALUES ('34', '2', '40');
 INSERT INTO `user_role` VALUES ('35', '2', '41');
 INSERT INTO `user_role` VALUES ('36', '2', '42');
-INSERT INTO `user_role` VALUES ('37', '2', '43');
-INSERT INTO `user_role` VALUES ('38', '1', '44');
+INSERT INTO `user_role` VALUES ('37', '1', '43');
+INSERT INTO `user_role` VALUES ('38', '2', '44');
 INSERT INTO `user_role` VALUES ('39', '1', '45');
 INSERT INTO `user_role` VALUES ('40', '1', '46');
 INSERT INTO `user_role` VALUES ('41', '1', '47');
+INSERT INTO `user_role` VALUES ('42', '1', '48');
+INSERT INTO `user_role` VALUES ('43', '1', '49');
 
 -- ----------------------------
 -- Table structure for user_verification
@@ -339,15 +336,12 @@ CREATE TABLE `user_verification` (
   `salt` varchar(7) NOT NULL,
   `isLock` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0未被锁定，1被锁定',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of user_verification
 -- ----------------------------
 INSERT INTO `user_verification` VALUES ('1', 'ZB-ROOT-1', '06e9ca3a2b8f14acc4b28148cad83bf5', 'O1YhIT', '0');
 INSERT INTO `user_verification` VALUES ('41', 'JSB-KLL-5', 'f470c9a8a8ba1b0317ad9f6889105827', '3Qoxdg', '0');
-INSERT INTO `user_verification` VALUES ('43', 'XSB-WH-7', 'a0a7f40c9995296c7d309853afe1c4f5', 'xNlZys', '0');
-INSERT INTO `user_verification` VALUES ('44', 'XSB-CF-8', '872db2e109a7325ad091223b10ba971f', 'YdrD50', '0');
-INSERT INTO `user_verification` VALUES ('45', 'XSB-ZM-9', '06308a80b399b83a1a9d018bce3ceb80', '9ub4ks', '0');
-INSERT INTO `user_verification` VALUES ('46', 'JSB-ZCL-6', '12ae1a91875ce639e122eeae62e6ed03', 'asQMsi', '0');
-INSERT INTO `user_verification` VALUES ('47', 'JSB-THC-7', '1536fb08017456d2239e345cc95e22bc', 'Q3EUJF', '0');
+INSERT INTO `user_verification` VALUES ('44', 'XSB-CF-8', 'e35c3ea6ae574f83f496c27d22ef3db7', 'maUxO2', '0');
+INSERT INTO `user_verification` VALUES ('48', 'JSB-WR-4', 'b629c0219a224f121db44458f25003ad', 'tYl3Z4', '0');
