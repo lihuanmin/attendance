@@ -7,27 +7,105 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<script type="text/javascript" src="/attendance/static/js/commons/common.js"></script>
-<script type="text/javascript" src="/attendance/static/js/commons/jquery-3.2.1.min.js"></script>
-<script type="text/javascript" src="/attendance/static/js/layer-v3.1.1/layer/layer.js"></script>
-<script type="text/javascript" src="/attendance/static/js/dict/simple-input-method.js"></script>
-<script type="text/javascript" src="/attendance/static/js/time/laydate.js"></script>
-<link rel="stylesheet" type="text/css" href="/attendance/static/js/layer-v3.1.1/layer/mobile/need/layer.css">
-<link href="/attendance/static/css/common.css" rel="stylesheet" type="text/css" />
-<title>个人中心</title>
+<script type="text/javascript"
+	src="/attendance/static/js/commons/common.js"></script>
+<script type="text/javascript"
+	src="/attendance/static/js/commons/jquery-3.2.1.min.js"></script>
+<script type="text/javascript"
+	src="/attendance/static/js/layer-v3.1.1/layer/layer.js"></script>
+<script type="text/javascript"
+	src="/attendance/static/js/dict/simple-input-method.js"></script>
+<script type="text/javascript"
+	src="/attendance/static/js/time/laydate.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="/attendance/static/js/layer-v3.1.1/layer/mobile/need/layer.css">
+<link href="/attendance/static/css/common.css" rel="stylesheet"
+	type="text/css" />
+<link href="/attendance/static/css/form.css" rel="stylesheet"
+	type="text/css" />
+	<link href="/attendance/static/css/table.css" rel="stylesheet"
+	type="text/css" />
+	<link href="/attendance/static/css/search.css" rel="stylesheet"
+	type="text/css" />
+<title>我的考勤</title>
 </head>
-<body>
+<body onload="setInterval(nowtime,1000)">
 	<div class="nav-top">
-		<img class="avatar" src="${userInfo.portrait}" title="${userInfo.realName}"/>
-		<ul>
-			<li>
-				<a href="#">nav1</a>
-			</li>
-			<li>
-				<a href="#">nav1</a>
-			</li>
-		</ul>
+		<img class="avatar" src="${userInfo.portrait}" title="${userInfo.realName}" />
+		<div class="divtime">
+			<script type="text/javascript">
+                today = new Date();
+                function initArray() {
+                    this.length = initArray.arguments.length
+                    for (var i = 0; i < this.length; i++)
+                        this[i + 1] = initArray.arguments[i]
+                }
+                var d = new initArray(
+                "星期日",
+                "星期一",
+                "星期二",
+                "星期三",
+                "星期四",
+                "星期五",
+                "星期六");
+                document.write(
+                "",
+                today.getFullYear(), "年",
+                today.getMonth() + 1, "月",
+                today.getDate(), "日   ",
+                d[today.getDay() + 1],
+                "");
+            </script>
+
+			<span id="t1" style="font-family: 'Arial'; font-size: 16px; font-weight: bold; color: black; width: 60px;">
+			<script type="text/javascript">
+			            todaytime = new Date();
+			            var hour = todaytime.getHours();
+			            var minute = todaytime.getMinutes();
+			            var second = todaytime.getSeconds();
+			            var nowTime = "";
+			            if (hour < 10) {
+			                nowTime += "0";
+			            }
+			            nowTime += hour + ":";
+			            if (minute < 10) {
+			                nowTime += "0";
+			            }
+			            nowTime += minute + ":";
+			            if (second < 10) {
+			                nowTime += "0";
+			            }
+			            nowTime += second;
+			            document.getElementById("t1").innerHTML = "&nbsp;&nbsp;" + nowTime;
+        	</script>
+			</span>
+			<script type="text/javascript">
+                function nowtime() {
+                    todaytime = new Date();
+                    var hour = todaytime.getHours();
+                    var minute = todaytime.getMinutes();
+                    var second = todaytime.getSeconds();
+                    var nowTime = "";
+                    if (hour < 10) {
+                        nowTime += "0";
+                    }
+                    nowTime += hour + ":";
+                    if (minute < 10) {
+                        nowTime += "0";
+                    }
+                    nowTime += minute + ":";
+                    if (second < 10) {
+                        nowTime += "0";
+                    }
+                    nowTime += second;
+                    document.getElementById("t1").innerHTML = "&nbsp;&nbsp;" + nowTime;
+                    return nowTime;
+                }
+            </script>
+		</div>
+		
 	</div>
+	
 	<div class="nav">
 		<ul>
 			<c:forEach var="dir" items="${menuList}">
@@ -37,7 +115,9 @@
 						<c:forEach var="sonDir" items="${menuList}">
 							<c:choose>
 								<c:when test="${sonDir.parentId == dir.id}">
-									<li class="nav-2"><span style="width:2px;">&nbsp;&nbsp;</span><a href="${sonDir.url}">${sonDir.menuName}</a></li>
+									<li class="nav-2"><span><img width="10px"
+											height="10px" src="/attendance/static/img/right.jpg" />&nbsp;&nbsp;</span><a
+										href="${sonDir.url}">${sonDir.menuName}</a></li>
 								</c:when>
 							</c:choose>
 						</c:forEach>
@@ -47,30 +127,35 @@
 		</ul>
 	</div>
 	<div class="content">
-	<div class="box">
-			<div class="demo2">
+		<div class="search">
 			<form>
-				<input placeholder="开始日期" id="startTime" name="startTime" class="laydate-icon" onClick="laydate({istime: true, format: 'YYYY-MM-DD'})">
-				<input placeholder="结束日期" id="endTime" name="endTime" class="laydate-icon" onClick="laydate({istime: true, format: 'YYYY-MM-DD'})">
-				<input id = "queryButton" class="btn btn-primary" type="button" value="查询">
+				<input placeholder="开始日期" id="startTime" name="startTime" class="laydate-icon" onClick="laydate({istime: true, format: 'YYYY-MM-DD'})"> 
+				<input placeholder="结束日期" id="endTime" name="endTime" class="laydate-icon" onClick="laydate({istime: true, format: 'YYYY-MM-DD'})"> 
+				<input id="queryButton" class="btn btn-primary" type="button" value="查询">
 			</form>
-			</div>
 		</div>
-		<table class="table table-bordered" id='tableResult'>
-	    <thead>
-	        <tr>
-	            <th>上午考勤</th>
-	            <th>上午状态</th>
-	            <th>下午考勤</th>
-	            <th>下午状态</th>
-	            <th>考勤日期</th>
-	        </tr>
-	    </thead>
-	    <tbody id="tableBody"></tbody>
-</table>
-<table width="60%" align="right">
-        <tr><td><div id="barcon" name="barcon"></div></td></tr>
-</table>
+		<div class="list">
+			<table id='tableResult' border="1" class="t1">
+			<!-- 表格标题 -->
+				<thead>
+					<tr>
+						<th>上午考勤</th>
+						<th>上午状态</th>
+						<th>下午考勤</th>
+						<th>下午状态</th>
+						<th>考勤日期</th>
+					</tr>
+				</thead>
+				<!-- 数据列表 -->
+				<tbody id="tableBody"></tbody>
+			</table>
+			<!-- 分页 -->
+			<table id="page">
+				<tr>
+					<td><div id="barcon" name="barcon"></div></td>
+				</tr>
+			</table>
+		</div>
 	</div>
 </body>
 <script language="JavaScript">
@@ -112,7 +197,6 @@ function goPage(startTime, endTime, pageNumber, pageSize){
             var currentPage = pageNumber;
             //数据集合
             var dataList = datas.dataList;
-            console.log(dataList);
              $("#tableBody").empty();//清空表格
              if (dataList.length > 0 ) {
              $(dataList).each(function(){//重新生成
@@ -125,9 +209,9 @@ function goPage(startTime, endTime, pageNumber, pageSize){
                 $("#tableBody").append('</tr>');
                 });  
             } else {                                
-                $("#tableBody").append('<tr><th colspan ="4"><center>查询无数据</center></th></tr>');
+                $("#tableBody").append('<tr><th colspan ="5"><center>查询无数据</center></th></tr>');
             }
-            var tempStr = "总共"+datas.totalRecord+"条记录|总共"+totalPage+"页|当前第"+currentPage+"页";
+            var tempStr = "总共"+totalPage+"页|当前第"+currentPage+"页|";
            
            
             if(currentPage>1){
@@ -148,7 +232,7 @@ function goPage(startTime, endTime, pageNumber, pageSize){
                 tempStr += "下一页>";
                 tempStr += "尾页";    
             }
-                    document.getElementById("barcon").innerHTML = tempStr;
+             document.getElementById("barcon").innerHTML = tempStr;
           },
           error: function(e){
           console.log("查询失败");
@@ -210,6 +294,5 @@ var end = {
         start.max = datas; //结束日选好后，充值开始日的最大日期
     }
 };
-}
 </script>
 </html>

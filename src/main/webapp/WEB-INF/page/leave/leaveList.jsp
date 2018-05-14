@@ -17,59 +17,87 @@
 <script type="text/javascript" src="/attendance/static/js/time/laydate.js"></script>
 <link rel="stylesheet" type="text/css" href="/attendance/static/js/layer-v3.1.1/layer/mobile/need/layer.css">
 <link href="/attendance/static/css/common.css" rel="stylesheet" type="text/css" />
-
-<style type="text/css">
-* {
-	margin: 0;
-	padding: 0;
-	list-style: none;
-}
-h2 {
-	line-height: 30px;
-	font-size: 20px;
-}
-a, a:hover {
-	text-decoration: none;
-}
-pre {
-	font-family: '微软雅黑'
-}
-.box {
-	width: 970px;
-	padding: 10px 20px;
-	background-color: #fff;
-	margin: 10px auto;
-}
-.box a {
-	padding-right: 20px;
-}
-.demo1, .demo2, .demo3, .demo4, .demo5, .demo6 {
-	margin: 25px 0;
-}
-h3 {
-	margin: 10px 0;
-}
-.layinput {
-	height: 22px;
-	line-height: 22px;
-	width: 150px;
-	margin: 0;
-}
-</style>
-<title>个人中心</title>
+<link href="/attendance/static/css/form.css" rel="stylesheet" type="text/css"/>
+<link href="/attendance/static/css/search.css" rel="stylesheet" type="text/css"/>
+<title>我要请假</title>
 </head>
-<body>
+<body onload="setInterval(nowtime,1000)">
 	<div class="nav-top">
-		<img class="avatar" src="${userInfo.portrait}" title="${userInfo.realName}"/>
-		<ul>
-			<li>
-				<a href="#">nav1</a>
-			</li>
-			<li>
-				<a href="#">nav1</a>
-			</li>
-		</ul>
+		<img class="avatar" src="${userInfo.portrait}" title="${userInfo.realName}" />
+		<div class="divtime">
+			<script type="text/javascript">
+                today = new Date();
+                function initArray() {
+                    this.length = initArray.arguments.length
+                    for (var i = 0; i < this.length; i++)
+                        this[i + 1] = initArray.arguments[i]
+                }
+                var d = new initArray(
+                "星期日",
+                "星期一",
+                "星期二",
+                "星期三",
+                "星期四",
+                "星期五",
+                "星期六");
+                document.write(
+                "",
+                today.getFullYear(), "年",
+                today.getMonth() + 1, "月",
+                today.getDate(), "日   ",
+                d[today.getDay() + 1],
+                "");
+            </script>
+
+			<span id="t1" style="font-family: 'Arial'; font-size: 16px; font-weight: bold; color: black; width: 60px;">
+			<script type="text/javascript">
+			            todaytime = new Date();
+			            var hour = todaytime.getHours();
+			            var minute = todaytime.getMinutes();
+			            var second = todaytime.getSeconds();
+			            var nowTime = "";
+			            if (hour < 10) {
+			                nowTime += "0";
+			            }
+			            nowTime += hour + ":";
+			            if (minute < 10) {
+			                nowTime += "0";
+			            }
+			            nowTime += minute + ":";
+			            if (second < 10) {
+			                nowTime += "0";
+			            }
+			            nowTime += second;
+			            document.getElementById("t1").innerHTML = "&nbsp;&nbsp;" + nowTime;
+        	</script>
+			</span>
+			<script type="text/javascript">
+                function nowtime() {
+                    todaytime = new Date();
+                    var hour = todaytime.getHours();
+                    var minute = todaytime.getMinutes();
+                    var second = todaytime.getSeconds();
+                    var nowTime = "";
+                    if (hour < 10) {
+                        nowTime += "0";
+                    }
+                    nowTime += hour + ":";
+                    if (minute < 10) {
+                        nowTime += "0";
+                    }
+                    nowTime += minute + ":";
+                    if (second < 10) {
+                        nowTime += "0";
+                    }
+                    nowTime += second;
+                    document.getElementById("t1").innerHTML = "&nbsp;&nbsp;" + nowTime;
+                    return nowTime;
+                }
+            </script>
+		</div>
+		
 	</div>
+	
 	<div class="nav">
 		<ul>
 			<c:forEach var="dir" items="${menuList}">
@@ -79,7 +107,9 @@ h3 {
 						<c:forEach var="sonDir" items="${menuList}">
 							<c:choose>
 								<c:when test="${sonDir.parentId == dir.id}">
-									<li class="nav-2"><span style="width:2px;">&nbsp;&nbsp;</span><a href="${sonDir.url}">${sonDir.menuName}</a></li>
+									<li class="nav-2"><span><img width="10px"
+											height="10px" src="/attendance/static/img/right.jpg" />&nbsp;&nbsp;</span><a
+										href="${sonDir.url}">${sonDir.menuName}</a></li>
 								</c:when>
 							</c:choose>
 						</c:forEach>
@@ -90,23 +120,12 @@ h3 {
 	</div>
 	<div class="content">
 	<form action="return false" id="atten">
-		<div class="box">
-			<div class="demo2">
-				<h3>开始时间</h3>
-				<input placeholder="请输入日期" name="start" class="laydate-icon" onClick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
-			</div>
-			<div class="demo2">
-				<h3>结束时间</h3>
-				<input placeholder="请输入日期" name="end" class="laydate-icon" onClick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
-			</div>
-			<div>
-				<textarea name="reason"></textarea>
-			</div>
-			<div>
+			<div class="search">
+				<input type="text" placeholder="请输入日期" name="start" class="laydate-icon" onClick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"><br/>
+				<input type="text" placeholder="请输入日期" name="end" class="laydate-icon" onClick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"><br/>
+				<textarea name="reason"></textarea><br/>
 				<input type="button" onclick="atten()" value="请假"/>
 			</div>
-		</div>
-		
 	</form>
 	</div>
 </body>

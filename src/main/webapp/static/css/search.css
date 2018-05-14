@@ -1,0 +1,9 @@
+#startTime,#endTime {
+	width: 240px;
+	height: 30px;
+	margin-bottom: 16px;
+	border: 1px solid #d3d7d4;
+}
+.search{
+	float: right;
+}

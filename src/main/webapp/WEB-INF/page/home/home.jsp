@@ -6,135 +6,86 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>个人中心</title>
-<style>
-	/*common*/
-	* {
-		box-sizing: border-box;
-		margin: 0;
-		padding: 0;
-		border: none;
-	}
-	a {
-		color: #fff;
-		text-decoration: none;
-	}
-	ul {
-		list-style: none;
-	}
-	input, textarea, input[type=button] {
-		outline: none;
-	}
-	input[type=text], textarea {
-		width: 300px;
-		padding: 5px 10px;
-		border: 1px solid #ddd;
-		border-radius: 5px;
-	}
-	input[type=text]:hover, textarea:hover {
-		border-color: #7E57C2;
-	}
-	textarea {
-		min-height: 80px;
-		padding: 10px;
-		resize: vertical;
-		overflow: hidden;
-	}
-	input[type=button] {
-		border: none;
-		padding: 5px 30px;
-		border-radius: 5px;
-		background-color: #7E57C2;
-		color: #fff;
-		cursor: pointer;
-	}
-	input[type=button]:hover {
-		background-color: #673AB7;
-	}
-	table {
-		border: 1px solid #ddd;
-		border-collapse:collapse;
-	}
-	table th, table td {
-		padding: 5px 40px;
-	}
-	table tr:nth-child(odd) {
-		background-color: #eee;
-	}
-	table a {
-		color: #7E57C2;
-	}
-	.ul-list > li {
-		margin: 10px 0;
-	}
-	
-	/*this page*/
-	.nav-top {
-		padding: 10px 20px;
-		background-color: #7E57C2;
-		color: #fff;
-		overflow: hidden;
-	}
-	.nav-top > ul {
-	    margin-top: 5px;
-		float: left;
-		margin-left: 40px;
-	}
-	.nav-top > ul > li {
-		float: left;
-		padding: 3px 20px;
-		margin-right: 20px;
-	}
-	.nav-top > ul > li:hover {
-		background: rgba(255, 255, 255, .1);
-	}
-	.avatar {
-		float: left;
-		width: 40px;
-		height: 40px;
-		border-radius: 40px;
-		cursor: pointer;
-	}
-	.nav {
-		float: left;
-		background: #7E57C2;
-		color: #fff;
-	}
-	.nav > ul {
-		padding: 20px 0;
-	}
-	.nav > ul > li {
-		padding: 5px 30px;
-		
-	}
-	.nav a {
-		color: #eee;
-	}
-	.nav-1 {
-		background: rgba(255, 255, 255, .2);
-	}
-	.nav-2:hover {
-		background: rgba(255, 255, 255, .1);
-	}
-	
-	.content {
-		float: left;
-		padding: 20px;
-	}
-</style>
+<link  href="/attendance/static/css/common.css" rel="stylesheet" type="text/css" />
+<title>考勤系统</title>
 </head>
-<body>
+<body onload="setInterval(nowtime,1000)">
 	<div class="nav-top">
-		<img class="avatar" src="${userInfo.portrait}" title="${userInfo.realName}"/>
-		<ul>
-			<li>
-				<a href="#">nav1</a>
-			</li>
-			<li>
-				<a href="#">nav1</a>
-			</li>
-		</ul>
+		<img class="avatar" src="${userInfo.portrait}" title="${userInfo.realName}" />
+		<div class="divtime">
+			<script type="text/javascript">
+                today = new Date();
+                function initArray() {
+                    this.length = initArray.arguments.length
+                    for (var i = 0; i < this.length; i++)
+                        this[i + 1] = initArray.arguments[i]
+                }
+                var d = new initArray(
+                "星期日",
+                "星期一",
+                "星期二",
+                "星期三",
+                "星期四",
+                "星期五",
+                "星期六");
+                document.write(
+                "",
+                today.getFullYear(), "年",
+                today.getMonth() + 1, "月",
+                today.getDate(), "日   ",
+                d[today.getDay() + 1],
+                "");
+            </script>
+
+			<span id="t1" style="font-family: 'Arial'; font-size: 16px; font-weight: bold; color: black; width: 60px;">
+			<script type="text/javascript">
+			            todaytime = new Date();
+			            var hour = todaytime.getHours();
+			            var minute = todaytime.getMinutes();
+			            var second = todaytime.getSeconds();
+			            var nowTime = "";
+			            if (hour < 10) {
+			                nowTime += "0";
+			            }
+			            nowTime += hour + ":";
+			            if (minute < 10) {
+			                nowTime += "0";
+			            }
+			            nowTime += minute + ":";
+			            if (second < 10) {
+			                nowTime += "0";
+			            }
+			            nowTime += second;
+			            document.getElementById("t1").innerHTML = "&nbsp;&nbsp;" + nowTime;
+        	</script>
+			</span>
+			<script type="text/javascript">
+                function nowtime() {
+                    todaytime = new Date();
+                    var hour = todaytime.getHours();
+                    var minute = todaytime.getMinutes();
+                    var second = todaytime.getSeconds();
+                    var nowTime = "";
+                    if (hour < 10) {
+                        nowTime += "0";
+                    }
+                    nowTime += hour + ":";
+                    if (minute < 10) {
+                        nowTime += "0";
+                    }
+                    nowTime += minute + ":";
+                    if (second < 10) {
+                        nowTime += "0";
+                    }
+                    nowTime += second;
+                    document.getElementById("t1").innerHTML = "&nbsp;&nbsp;" + nowTime;
+                    return nowTime;
+                }
+            </script>
+		</div>
+		
 	</div>
+	
 	<div class="nav">
 		<ul>
 			<c:forEach var="dir" items="${menuList}">
@@ -144,7 +95,9 @@
 						<c:forEach var="sonDir" items="${menuList}">
 							<c:choose>
 								<c:when test="${sonDir.parentId == dir.id}">
-									<li class="nav-2"><span style="width:2px;">&nbsp;&nbsp;</span><a href="${sonDir.url}">${sonDir.menuName}</a></li>
+									<li class="nav-2"><span><img width="10px"
+											height="10px" src="/attendance/static/img/right.jpg" />&nbsp;&nbsp;</span><a
+										href="${sonDir.url}">${sonDir.menuName}</a></li>
 								</c:when>
 							</c:choose>
 						</c:forEach>
@@ -154,32 +107,14 @@
 		</ul>
 	</div>
 	<div class="content">
-		<input type="text" placeholder="input...">
-		<textarea placeholder="input..."></textarea>
-		<input type="button" value="submit">
-		<table border="0">
-			<tr>
-				<th>th</th>
-				<th>th</th>
-				<th>opreation</th>
-			</tr>
-			<tr>
-				<td>td</td>
-				<td>td</td>
-				<th><a href="#">aaaaa</a></th>
-			</tr>
-			<tr>
-				<td>td</td>
-				<td>td</td>
-				<th><a href="#">aaaaa</a></th>
-			</tr>
-		</table>
-		<ul class="ul-list">
-			<li>输入框：<input type="text" placeholder="input..."></li>
-			<li>输入框：<input type="text" placeholder="input..."></li>
-			<li>输入框：<input type="text" placeholder="input..."></li>
-			<li>输入框：<input type="text" placeholder="input..."></li>
-		</ul>
+		  <div class="main">
+        <span style="font-size: 50px; font-weight: bold; font-family: 楷体;"><span id="SystemName_CH" class="Systext">Lee</span></span><br />
+        <span style="font-size: 50px; font-weight: bold; font-family: 楷体;">欢迎进入</span><br /><br />
+        <span style="font-size: 20px; font-weight: bold; font-family: 楷体;"><span id="Copyright_CH" class="Systext">你所经历的一切都是有意义的</span></span>
+    </div> 
+    	<div style="float:right;" id="github_iframe"></div>
+
+		<script type="text/javascript" color="0,0,0" opacity='0.7' zIndex="-2" count="200" src="/attendance/static/js/canvas-nest.js"></script>
 	</div>
 </body>
 </html>

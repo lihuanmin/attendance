@@ -19,11 +19,11 @@
 <link href="/attendance/static/css/common.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-	<div class="nav-top">
+			<div class="nav-top">
 		<img class="avatar" src="${userInfo.portrait}" title="${userInfo.realName}"/>
 		<ul>
 			<li>
-				<a href="#">nav1</a>
+				<a href="#">打卡</a>
 			</li>
 			<li>
 				<a href="#">nav1</a>
@@ -39,7 +39,7 @@
 						<c:forEach var="sonDir" items="${menuList}">
 							<c:choose>
 								<c:when test="${sonDir.parentId == dir.id}">
-									<li class="nav-2"><span style="width:2px;">&nbsp;&nbsp;</span><a href="${sonDir.url}">${sonDir.menuName}</a></li>
+									<li class="nav-2"><span><img width="10px" height="10px" src="/attendance/static/img/right.jpg"/>&nbsp;&nbsp;</span><a href="${sonDir.url}">${sonDir.menuName}</a></li>
 								</c:when>
 							</c:choose>
 						</c:forEach>

@@ -1,0 +1,18 @@
+
+
+#tableResult{
+	width:100%;
+}
+#tableResult, th , td  {
+  border-collapse: collapse;
+  padding: 5px;
+}
+thead > tr{
+	background-color:#f6f5ec;
+}
+
+/*·ÖÒ³*/
+#page{
+	float: right;
+	margin-top: 6px;
+}
