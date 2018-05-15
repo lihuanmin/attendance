@@ -17,6 +17,7 @@
 <script type="text/javascript" src="/attendance/static/js/time/laydate.js"></script>
 <link rel="stylesheet" type="text/css" href="/attendance/static/js/layer-v3.1.1/layer/mobile/need/layer.css">
 <link href="/attendance/static/css/common.css" rel="stylesheet" type="text/css" />
+<link href="/attendance/static/css/form.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 			<div class="nav-top">
@@ -51,7 +52,7 @@
 	<div class="content">
 		<form action="return false" id="upload" enctype='multipart/form-data'>
 			<input type="file" name="file" id="ctn-input-file"/>
-			<input type="button" id="infoLogoSaveBt" class="btn btn-default cnt-save" value="提交"/>
+			<input type="button" id="infoLogoSaveBt"  value="提交"/>
 		</form>
 	</div>
 </body>

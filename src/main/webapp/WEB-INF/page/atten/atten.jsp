@@ -200,12 +200,12 @@ function goPage(startTime, endTime, pageNumber, pageSize){
              $("#tableBody").empty();//清空表格
              if (dataList.length > 0 ) {
              $(dataList).each(function(){//重新生成
-                $("#tableBody").append('<tr>');
-                $("#tableBody").append('<td>' + timeParse(this.workTime) + '</td>');
-                $("#tableBody").append('<td>' + getStatus(this.amStatus) + '</td>');
-                $("#tableBody").append('<td>' + timeParse(this.endTime) +'</td>');
-                $("#tableBody").append('<td>' + getStatus(this.pmStatus) + '</td>');
-                $("#tableBody").append('<td>' + timeParse2(this.reference) + '</td>');
+                $("#tableBody").append('<tr align="center">');
+                $("#tableBody").append('<td align="center">' + timeParse(this.workTime) + '</td>');
+                $("#tableBody").append('<td align="center">' + getAmStatus(this.amStatus) + '</td>');
+                $("#tableBody").append('<td align="center">' + timeParse(this.endTime) +'</td>');
+                $("#tableBody").append('<td align="center">' + getPmStatus(this.pmStatus) + '</td>');
+                $("#tableBody").append('<td align="center">' + timeParse2(this.reference) + '</td>');
                 $("#tableBody").append('</tr>');
                 });  
             } else {                                
@@ -249,7 +249,7 @@ $(function() {
     goPage(realName,dept,0,PAGESIZE);
     });
 });
-function getStatus(status) {
+function getAmStatus(status) {
 	if(status===0) {
 		return "旷工";
 	}else if(status === 1){
@@ -258,8 +258,17 @@ function getStatus(status) {
 		return "签到成功";
 	}else if (status === 3) {
 		return "请假";
-	}else {
-		return "未知状态";
+	}
+}
+function getPmStatus(status) {
+	if(status===0) {
+		return "旷工";
+	}else if(status === 1){
+		return "早退";
+	}else if(status === 2){
+		return "签到成功";
+	}else if (status === 3) {
+		return "请假";
 	}
 }
 </script>

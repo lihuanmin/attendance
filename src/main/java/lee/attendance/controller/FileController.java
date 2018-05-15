@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -98,7 +97,8 @@ public class FileController {
 		List<UserFile> list = fileService.listFile(fileService.findDeptIdByUserId(userId));
 		for(UserFile uf : list) {
 			String url = uf.getFileUrl();
-			uf.setFileName(url.substring(url.lastIndexOf("\\")+1, url.lastIndexOf("-"))+url.substring(url.lastIndexOf(".")));
+			///home/lee/Desktop/1/attendance-b22de76837454cb3af9e6815af1d1600.sql
+			uf.setFileName(url.substring(url.lastIndexOf(File.separator)+1,url.lastIndexOf("-"))+"."+url.substring(url.lastIndexOf(".")+1));
 			uf.setDownloadName(url.substring(url.lastIndexOf("\\")+1));
 		}
 		model.addAttribute("fileList", list);

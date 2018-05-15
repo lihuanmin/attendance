@@ -20,6 +20,7 @@ input[type=text], textarea, select {
 	outline: none;
 	margin-bottom: 10px;
 }
+
 input[type=button] {
 	width: 300px;
 	border: 1px solid #0BA3A9;
