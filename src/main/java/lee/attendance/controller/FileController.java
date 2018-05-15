@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -60,12 +61,10 @@ public class FileController {
 		System.out.println(file.getPath());
 		//文件路径
         List<String> list = FileUtil.upLoad(req, file.getPath()+File.separator);
-        System.out.println(list.get(0));
         DeptFile deptFile = new DeptFile();
         deptFile.setDeptId(deptId);
         deptFile.setFileUrl(list.get(0));
         deptFile.setUserId(userId);
-        deptFile.setFileTime(new Date());
         return fileService.addFile(deptFile);
 	}
 	@RequestMapping("uploadPage")

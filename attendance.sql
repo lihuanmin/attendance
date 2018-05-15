@@ -66,14 +66,13 @@ CREATE TABLE `dept_file` (
   `deptId` int(11) NOT NULL,
   `fileUrl` varchar(50) NOT NULL,
   `userId` int(11) NOT NULL,
-  `fileTime` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
+  `fileTime` timestamp  NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of dept_file
 -- ----------------------------
-INSERT INTO `dept_file` VALUES ('1', '10', 'H:\\10\\new 1-8844d9006c1544ffac52d79ab6cc2b41.txt', '47', '2018-04-28 00:17:28');
 
 -- ----------------------------
 -- Table structure for menu
