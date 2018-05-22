@@ -24,8 +24,6 @@ public class PmJudge {
 		list = attendanceService.findDayAttendByDayPm(getYtd());
 		if(list.size()>0) {
 			for(int i = 0; i < list.size(); i++) {
-				System.out.println(getDayStartTime());
-				System.out.println(getDayEndTime());
 				UserLeave userLeave = leaveService.findLeavePm(getDayStartTime(), getDayEndTime(), list.get(i).getUserId());
 				if(userLeave != null) {
 					attendanceService.updatePmStatus(list.get(i).getId());

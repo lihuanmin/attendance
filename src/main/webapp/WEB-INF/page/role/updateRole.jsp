@@ -14,6 +14,7 @@
 <script type="text/javascript" src="/attendance/static/js/dict/pinyinUtil.js"></script>
 <script type="text/javascript" src="/attendance/static/js/dict/simple-input-method.js"></script>
 <link href="/attendance/static/css/common.css" rel="stylesheet" type="text/css" />
+<link href="/attendance/static/css/form.css" rel="stylesheet" type="text/css"/>
 <title>个人中心</title>
 </head>
 <body onload="setInterval(nowtime,1000)">
